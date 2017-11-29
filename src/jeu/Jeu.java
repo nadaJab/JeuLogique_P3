@@ -33,6 +33,7 @@ public abstract class Jeu {
 	
     private int nbCase = 4;
 	private int nbEssai;
+	private Mode mode;
 	
 	/**
 	 * la variable qui reprèsente le résultat de la méthode "void compare()".

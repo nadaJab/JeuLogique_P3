@@ -17,4 +17,5 @@ DUEL (3);
 	public int getMode() {
 		return this.mode;
 	}
+	
 }

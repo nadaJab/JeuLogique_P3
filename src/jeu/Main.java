@@ -4,7 +4,9 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+	
 	private static Jeu jeu;
+	private static Mode mod;
 	
 	 public static String menuJeu() {
 			String str;
@@ -39,23 +41,24 @@ public class Main {
 		 
 			Scanner sc = new Scanner(System.in);
 	        System.out.println(afficherMode());
-            Mode mode = Enum.valueOf(Mode.class, sc.next());
-         	
+	        
+         	int mode = mod.getMode(); 
+	        
          	switch(mode) {
          	
-         	case CHALLENGER :
+         	case 1 :
          		J.devinerChallenger();
          		System.out.println(J.toStringChallenger());
 
          		break;
          		
-         	case DEFENSEUR :
+         	case 2 :
          		J.devinerDefenseur();
          		System.out.println(J.toStringDefenseur());
 
          		break;
          	
-         	case DUEL :
+         	case 3 :
          		J.devinerDuel();
          		System.out.println(J.toStringDuel());
          		break;
