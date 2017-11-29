@@ -8,8 +8,9 @@ public class Mastermind extends Jeu implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 
-	public boolean comparer(int combiEssai[], int combiSecrete[]) {
+	public String resultatComparer(int combiEssai[], int combiSecrete[]) {
 		
 		String str = " ";
 		String str1 = " ";
@@ -49,7 +50,7 @@ public class Mastermind extends Jeu implements Serializable{
 
 		System.out.println("Proposition : " + Arrays.toString(combiEssai).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");
 		
-		return comparerRes;             
+		return str;             
 	} 
 		
 }

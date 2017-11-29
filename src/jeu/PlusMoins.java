@@ -9,14 +9,15 @@ public class PlusMoins extends Jeu implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * la méthode qui compare deux combinaisons une secrete et l'autre saisie par le joueur
+	 * Cette méthode est abstract.Elle retourne un résultat de type String de la comparaison 
+     * entre une combinaison secrète et une proposition donnée.   
 	 * @param combiSecrete 
 	 * @param combiEssai
-	 * @return comparerRes
+	 * @return str
 	 */	
-	public boolean comparer(int combiEssai[], int combiSecrete[]) {
-		String str = "";
-		boolean comparerRes =true;      
+	public String resultatComparer(int combiEssai[], int combiSecrete[]) {
+		
+		String str = " ";
 		
 		for(int i = 0; i < getNbCase(); i++) {
 			
@@ -25,17 +26,15 @@ public class PlusMoins extends Jeu implements Serializable{
 			}
 			else if(combiEssai[i] < combiSecrete[i]) {
 				str +="+";
-				comparerRes=false;		//Si combiEssai[i] et combiSecrete[i] sont différents alors comparerRes=false
+				
 			}
 			else if(combiEssai[i] > combiSecrete[i]) {
 				str += "-";
-				comparerRes=false;
 			}
 		} 
-		System.out.println("Proposition : " + Arrays.toString(combiEssai).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");
-		/* Au final, si la proposition donnée et la combinaison secrète ne sont pas identiques
-		 * alors la méthode comparer(int [], int []) retourne <false> */
-		return comparerRes;             
-	}		
+		
+		String resultat = "Proposition : " + Arrays.toString(combiEssai).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n";
+		return resultat;
+	}
 	
 }

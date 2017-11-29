@@ -33,7 +33,6 @@ public abstract class Jeu {
 	
     private int nbCase = 4;
 	private int nbEssai;
-	private Mode mode;
 	
 	/**
 	 * la variable qui reprèsente le résultat de la méthode "void compare()".
@@ -124,14 +123,34 @@ public abstract class Jeu {
         
     
     /**
-     * Cette méthode est abstract. Elle permet de comparer entre une combinaison secrète donné par un joueur 
+     * Cette méthode permet de comparer entre une combinaison secrète donné par un joueur 
      * et une proposition donné par l'autre joueur. 
      * @param combiEssai[]
      * @param combiSecrete[]
      * @return elle retourne un boolean.
+     */    
+    public boolean comparer(int combiEssai[], int combiSecrete[]) {
+		boolean comparerRes;
+		
+		if(combiEssai.equals(combiSecrete)) {
+			comparerRes = true;
+		}
+		else {
+			comparerRes = false;
+		}
+		
+		return comparerRes;
+	}
+    
+    /**
+     * Cette méthode est abstract.Elle retourne un résultat de type String de la comparaison 
+     * entre une combinaison secrète et une proposition donnée.   
+     * @param combiEssai
+     * @param combiSecrete
+     * @return str
      */
-    public abstract boolean comparer(int combiEssai[], int combiSecrete[]);
-    	
+    public abstract String resultatComparer(int combiEssai[], int combiSecrete[]);
+   
 	/**
 	 * Cette méthode est spécifique pour le <<mode challenger>>.
 	 * Elle permet au joueur humain de deviner la combinaison secrète de l'ordinateur.
@@ -156,7 +175,13 @@ public abstract class Jeu {
 		
 		comparerRes = comparer(combiEssai, combiSecrete);
 		
+		if(!comparerRes) {
+			
+		System.out.println(resultatComparer(combiEssai, combiSecrete));
+		}
+		
 		nbEssai ++;
+		
 		}while(!(comparerRes ||  nbEssai>5));
 	}
     
@@ -198,6 +223,9 @@ public abstract class Jeu {
 			
 			combiEssai = genCombiOrdinateur();
 			comparerRes2 = comparer(combiEssai, combiSecrete);
+			System.out.println(resultatComparer(combiEssai, combiSecrete));
+
+			
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {}
