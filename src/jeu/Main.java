@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Main {
 	
 	private static Jeu jeu;
-	private static Mode mod;
+	
 	
 	 public static String menuJeu() {
 			String str;
@@ -42,8 +42,8 @@ public class Main {
 			Scanner sc = new Scanner(System.in);
 	        System.out.println(afficherMode());
 	        
-         	int mode = mod.getMode(); 
-	        
+	        int mode = sc.nextInt();
+    	    
          	switch(mode) {
          	
          	case 1 :
