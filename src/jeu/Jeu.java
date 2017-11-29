@@ -131,10 +131,10 @@ public abstract class Jeu {
      * @return elle retourne un boolean.
      */    
     public boolean comparer(int combiEssai[], int combiSecrete[]) {
-		boolean comparerRes;
 		
-		if(combiEssai.equals(combiSecrete)) {
-			comparerRes = true;
+    	if(Arrays.equals(combiEssai, combiSecrete)){
+    		
+    		comparerRes = true;
 		}
 		else {
 			comparerRes = false;
