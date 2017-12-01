@@ -71,15 +71,10 @@ public class Main {
     	 Scanner sc = new Scanner(System.in);
     	 System.out.println( menuJeu());
     	 int choix = 0;
-    	 
+    	
     	 try {
-    		 
     	    choix = sc.nextInt();
-    	 
-    	 }catch (InputMismatchException e) {
-         	System.out.println(" Vous devez saisir 1 ou 2 !!");
-         }
-    	 
+    	     
          if(choix == 1) {
          	jeu = new PlusMoins();
          	lancerJeu(jeu);
@@ -87,7 +82,11 @@ public class Main {
          else if(choix == 2) {
           	jeu = new Mastermind();
           	lancerJeu(jeu);
-         } 	
+         } 
+         
+    	 }catch (InputMismatchException e) {
+            	System.out.println(" Vous devez saisir 1 ou 2 !!");
+            } 
     }      
 }
 
