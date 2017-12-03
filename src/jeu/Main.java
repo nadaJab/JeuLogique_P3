@@ -6,9 +6,12 @@ import java.util.Scanner;
 public class Main {
 	
 	private static Jeu jeu;
-	
-	
-	 public static String menuJeu() {
+	//private static Scanner sc = new Scanner(System.in);
+	private static int mode;
+	private static int choix;	
+	private static boolean saisieOk = true; 
+
+  public static String menuJeu() {
 			String str;
 			str = "*****************************\n";
 			str += "********BIENVENU AU JEU******\n";
@@ -21,7 +24,7 @@ public class Main {
 		} 
 	 		
 	 
-	 public static String afficherMode() {
+  public static String afficherMode() {
 			String str;
 			str =  "*****************************\n";
 			str +=  "Mode -1- : Mode challenger \n";
@@ -31,19 +34,43 @@ public class Main {
 
 			return str;	
 		}
+  
+  public static String afficherFinPartie() {
+	  String str;
+		str =  "*****************************\n";
+		str +=  "Vous voulez :  \n";
+		str += " 1 : Rejouer au jeu \n";
+		str += " 2 : Lancer un autre jeu \n";
+		str += " 3 : Quitter l'application \n";
+		str +=  "*****************************";
+
+		return str; 
+  }
 	 
-	 public static void sortir(){
+  public static void sortir(){
 	        System.out.println("Merci et au revoir");
 	        System.exit(0);
 	    }
 	 
-	 public static void lancerJeu(Jeu J) {
-		 
-			Scanner sc = new Scanner(System.in);
+	
+  public static int saisieMode() throws IllegalArgumentException {
+	  Scanner cc = new Scanner(System.in);
+		mode= cc.nextInt();
+		
+		if (mode < 1 || mode > 3 ) {
+			throw new IllegalArgumentException("Vous devez saisir un chiffre : 1, 2 ou 3 !!"); }
+		return mode;
+	   }
+  
+  public static void choixMode(Jeu J) {
+		     
 	        System.out.println(afficherMode());
 	        
-	        int mode = sc.nextInt();
-    	    
+	        do {
+	        try {
+	        saisieOk = true;	
+	        saisieMode();
+    	   
          	switch(mode) {
          	
          	case 1 :
@@ -64,29 +91,101 @@ public class Main {
          		break;
           
          	}
+         	
+	        }catch (IllegalArgumentException e) {
+	      		 saisieOk = false; 
+	      		 System.out.println(e.getMessage());
+	      	 }
+	    	 catch (InputMismatchException e) {
+	        	 saisieOk = false;
+	    		 System.out.println("Erreur de saisi");
+	             }
+	        
+	        }while(!saisieOk);
 	 }
-	 
-       public static void main (String[] args) {
-    	   
-    	 Scanner sc = new Scanner(System.in);
+  
+  /**
+   * Cette méthode teste la saisie de l'utilisateur qui doit saisir soit le chiffre 1 ou 2
+   * @return choix
+   * @throws IllegalArgumentException
+   * @throws InputMismatchException
+   */
+  public static int saisieCorrecte() throws IllegalArgumentException {
+	  Scanner sc = new Scanner(System.in);
+		choix = sc.nextInt();
+		
+		if (choix < 1 || choix > 2 ) {
+			throw new IllegalArgumentException("Vous devez saisir 1 ou 2 !!"); }
+		return choix;
+	   }
+  
+  public static void lancerJeu() {
+	  
     	 System.out.println( menuJeu());
-    	 int choix = 0;
-    	
+    	 
+    	do	 {
+    		
     	 try {
-    	    choix = sc.nextInt();
-    	     
+    		 saisieOk = true; 
+    		 saisieCorrecte();
+    	           
+    	 }catch (IllegalArgumentException e) {
+      		 System.out.println(e.getMessage());
+      		 saisieOk = false; 
+      	 }
+    	 catch (InputMismatchException e) {
+        	 saisieOk = false;
+    		 System.out.println("Erreur de saisi");
+             }
+    	}while(!saisieOk);
+
+    		 
          if(choix == 1) {
          	jeu = new PlusMoins();
-         	lancerJeu(jeu);
+         	choixMode(jeu);
+         	
+         	try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {}
+         	
+         	finPartie();
          }	
          else if(choix == 2) {
           	jeu = new Mastermind();
-          	lancerJeu(jeu);
+          	choixMode(jeu);
+          	
+          	try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {}
+          	
+          	finPartie();
          } 
-         
-    	 }catch (InputMismatchException e) {
-            	System.out.println(" Vous devez saisir 1 ou 2 !!");
-            } 
+    } 
+  
+  public static void finPartie() {
+	  
+	  Scanner sc = new Scanner(System.in);
+	  System.out.println(afficherFinPartie());
+	  int choix = sc.nextInt();
+	  
+	  switch(choix) {
+	  case 1 :
+		  
+		  break;
+		  
+	  case 2 :
+		  lancerJeu();
+		  break;
+		  
+	  case 3 :
+		  sortir();
+		  break;
+	  }
+  }
+  
+       public static void main (String[] args) {
+    	   
+    	   lancerJeu();
     }      
 }
 
