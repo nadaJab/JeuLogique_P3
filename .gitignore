@@ -4,3 +4,7 @@
 
 # Log file
 *.log
+
+# bin repertoire
+
+/bin
