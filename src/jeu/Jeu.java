@@ -37,8 +37,11 @@ public abstract class Jeu {
 
 	private int nbCase;
 	private int nbEssai;
+	private int essai_config;
 	private Scanner sc = new Scanner(System.in);
 	private Properties prop = new Properties();
+	
+	
 	/**
 	 * la variable qui reprèsente le résultat de la méthode "void compare()".
 	 * Elle est de type boolean.
@@ -55,7 +58,9 @@ public abstract class Jeu {
 	protected int combiEssai1[] =  new int[getNbCase()];
 	protected String str = "";
 
-
+	protected int minMax[][] = new int[getNbCase()][2];
+	
+	
 	public void lecturePropertis() {
 		
 		String file = "resources\\config.properties";
@@ -81,7 +86,7 @@ public abstract class Jeu {
 		
 		lecturePropertis();
 		String resu = prop.getProperty("nbCase");
-		nbCase = Integer.parseInt(resu.replaceAll("\\|\\]|,|\\s", ""));  
+		nbCase = Integer.parseInt(resu.replaceAll("\\*", ""));  
 	
 		return nbCase;
 	}
@@ -94,7 +99,7 @@ public abstract class Jeu {
 		
 		lecturePropertis();
 		String resu = prop.getProperty("nbEssai");
-		nbEssai = Integer.parseInt(resu.replaceAll("\\|\\]|,|\\s", ""));  
+		nbEssai = Integer.parseInt(resu.replaceAll("\\*", ""));  
 		return nbEssai;
 	}
 
@@ -105,21 +110,21 @@ public abstract class Jeu {
 	public int[] getCombiEssai() {
 		return combiEssai;
 	}
-
+	
+	public abstract int[][] affinerMaxMin(int[] proposition1, String str) ;
+	
 	/**
 	 * Cette méthode permet de remplir un tableau qui reprèsente une combinaison  donné par l'ordinateur.
 	 * Ensuite, convertir ce tableau en un String.
 	 * @return strCombiOrdinateur
 	 */
 	public int[] genCombiOrdinateur() {
-
+		minMax = affinerMaxMin(combiEssai, str);
 		int tabCombiOrdinateur[] = new int[getNbCase()];
 
 		for(int i = 0; i < getNbCase(); i++) {
-
-			tabCombiOrdinateur[i] = (int) (Math.random() * 10);	
+			tabCombiOrdinateur[i] = (int) (Math.random() * (minMax[i][1] - minMax[i][0] +1)) + minMax[i][0];	
 		}
-
 		return tabCombiOrdinateur;
 	}
 
@@ -240,8 +245,6 @@ public abstract class Jeu {
 		return str;
 	}
 
-	public abstract int[] genPropOrdinateur(int[] proposition1, String str,int[] tabMin,int[] tabMax);
-
 	/**
 	 * Cette méthode est spécifique pour le <<mode défenseur>>.
 	 * Elle permet à l'ordinateur de deviner la combinaison secrète de joueur humain.
@@ -264,16 +267,9 @@ public abstract class Jeu {
 			}
 		}while( !saisieOk );  
 
-		//**********
-		int tabMin[] = new int[getNbCase()];
-		int tabMax[] = new int[getNbCase()];
-		for(int i = 0; i < getNbCase(); i++) {
-			tabMax[i] = 9;		
-		}
-		//***********
 		do {
 
-			combiEssai = genPropOrdinateur(combiEssai, str,tabMin,tabMax);
+			combiEssai = genCombiOrdinateur();
 
 			comparerRes2 = comparer(combiEssai, combiSecrete);
 
@@ -324,11 +320,6 @@ public abstract class Jeu {
 	 **/
 	public void devinerDuel() {
 
-		int tabMin[] = new int[getNbCase()];
-		int tabMax[] = new int[getNbCase()];
-		for(int i = 0; i < getNbCase(); i++) {
-			tabMax[i] = 9;		
-		}
 		boolean saisieOk = false;
 		System.out.println("Donner votre combinaison secrète");
 
@@ -382,7 +373,7 @@ public abstract class Jeu {
 
 						System.out.println("Proposition de l'ordinateur");	
 
-						combiEssai = genPropOrdinateur(combiEssai, str,tabMin,tabMax);
+						combiEssai = genCombiOrdinateur();
 						comparerRes2 = comparer(combiEssai, combiSecrete);
 
 						if(!comparerRes2) {
