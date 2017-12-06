@@ -6,12 +6,11 @@ import java.util.Scanner;
 public class Main {
 
 	private static Jeu jeu;
-	//private static Scanner sc = new Scanner(System.in);
 	private static int mode;
 	private static int choix;	
 	private static int choixRejouer;
-	private static boolean saisieOk = true; 
-
+	private static Scanner sc = new Scanner(System.in);
+	
 	public static String menuJeu() {
 		String str;
 		str = "*****************************\n";
@@ -53,24 +52,32 @@ public class Main {
 		System.exit(0);
 	}
 
-
+	/**
+	 * Cette méthode teste la saisie de l'utilisateur qui doit saisir soit : 1 , 2 ou 3 selon le mode choisi
+	 * @return  mode, un entier
+	 * @throws IllegalArgumentException
+	 */
 	public static int saisieMode() throws IllegalArgumentException {
-		Scanner cc = new Scanner(System.in);
-		mode= cc.nextInt();
+		mode= sc.nextInt();
 
 		if (mode < 1 || mode > 3 ) {
 			throw new IllegalArgumentException("Vous devez saisir un chiffre : 1, 2 ou 3 !!"); }
 		return mode;
 	}
 
+	/**
+	 * Cette méthode permet de lancer le jeu en fonction du mode choisit par le joueur. 
+	 * @param J, de type Jeu
+	 */
 	public static void choixMode(Jeu J) {
-
-		System.out.println(afficherMode());
+		boolean saisiOk = false; 
 
 		do {
+			System.out.println(afficherMode());
+
 			try {
-				saisieOk = true;	
 				saisieMode();
+				saisiOk = true;	
 
 				switch(mode) {
 
@@ -94,25 +101,22 @@ public class Main {
 				}
 
 			}catch (IllegalArgumentException e) {
-				saisieOk = false; 
 				System.out.println(e.getMessage());
 			}
 			catch (InputMismatchException e) {
-				saisieOk = false;
 				System.out.println("Erreur de saisi");
 			}
 
-		}while(!saisieOk);
+		}while(!saisiOk);
 	}
 
 	/**
-	 * Cette méthode teste la saisie de l'utilisateur qui doit saisir soit le chiffre 1 ou 2
+	 * Cette méthode teste la saisie du joueur qui doit saisir soit 1 ou 2 selon le jeu choisi.
 	 * @return choix
 	 * @throws IllegalArgumentException
 	 * @throws InputMismatchException
 	 */
 	public static int saisieCorrecte() throws IllegalArgumentException {
-		Scanner sc = new Scanner(System.in);
 		choix = sc.nextInt();
 
 		if (choix < 1 || choix > 2 ) {
@@ -120,78 +124,116 @@ public class Main {
 		return choix;
 	}
 
+	/**
+	 * Cette méthode permet de lancer le jeu que le joueur a choisit, soit le jeu PlusMoins ou le jeu Mastermind.
+	 * @param choix, un entier
+	 * @param jeu
+	 */
 	public static void lancerJeu() {
-
-		System.out.println( menuJeu());
+		boolean saisiOk = false; 
 
 		do	 {
 
+			System.out.println( menuJeu());
+
 			try {
-				saisieOk = true; 
 				saisieCorrecte();
+				saisiOk = true; 
+
+				if(choix == 1) {
+					jeu = new PlusMoins();
+					choixMode(jeu);
+
+				}	
+				else if(choix == 2) {
+					jeu = new Mastermind();
+					choixMode(jeu);
+				} 
+
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {}
+
+				finPartie(); 
 
 			}catch (IllegalArgumentException e) {
 				System.out.println(e.getMessage());
-				saisieOk = false; 
 			}
 			catch (InputMismatchException e) {
-				saisieOk = false;
 				System.out.println("Erreur de saisi");
 			}
-		}while(!saisieOk);
-
-
-		if(choix == 1) {
-			jeu = new PlusMoins();
-			choixMode(jeu);
-
-		}	
-		else if(choix == 2) {
-			jeu = new Mastermind();
-			choixMode(jeu);
-		} 	
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {}
-
-		finPartie(); 
+		}while(!saisiOk);
 	} 
 
-	public static void finPartie() {
+	/**
+	 * Cette méthode teste la saisie du joueur qui doit saisir soit 1, 2 ou 3.
+	 * @return choixRejouer, un entier
+	 * @throws IllegalArgumentException
+	 */
+	public static int saisiFinPartie() throws IllegalArgumentException {
+		
+		choixRejouer= sc.nextInt();
 
-		Scanner sc = new Scanner(System.in);
-		System.out.println(afficherFinPartie());
-		choixRejouer = sc.nextInt();
-
-		switch(choixRejouer) {
-		case 1 :
-			if(choix == 1) {
-				jeu = new PlusMoins();
-				choixMode(jeu);
-			}	
-			else if(choix == 2) {
-				jeu = new Mastermind();
-				choixMode(jeu);
-			}
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {}
-
-			finPartie();
-			break;
-
-		case 2 :
-			lancerJeu();
-			break;
-
-		case 3 :
-			sortir();
-			break;
-		}
+		if (choixRejouer < 1 || choixRejouer > 3 ) {
+			throw new IllegalArgumentException("Vous devez saisir un chiffre : 1, 2 ou 3 !!"); }
+		return choixRejouer;
 	}
 
-	public static void main (String[] args) {
+	/**
+	 * Cette méthode s'affiche à la fin du partie. Elle permet au joueur de lancer une nouvelle partie, 
+	 * un nouveau jeu ou de quitter le jeu. 
+	 */
+	public static void finPartie() {
 
+		boolean saisiOk = false; 
+
+		do {
+			System.out.println(afficherFinPartie());
+			try {
+
+				saisiFinPartie();
+				saisiOk = true;
+
+				switch(choixRejouer) {
+
+				case 1 :
+					if(choix == 1) {
+						jeu = new PlusMoins();
+						choixMode(jeu);
+					}	
+					else if(choix == 2) {
+						jeu = new Mastermind();
+						choixMode(jeu);
+					}
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {}
+
+					finPartie();
+					break;
+
+				case 2 :
+					lancerJeu();
+					break;
+
+				case 3 :
+					sortir();
+					break;
+				}
+
+			}catch (IllegalArgumentException e) {
+				System.out.println(e.getMessage());
+			}
+			catch (InputMismatchException e) {
+				System.out.println("Erreur de saisi");
+			}
+
+		}while(!saisiOk);
+	}
+
+
+	public static void main (String[] args) {
+		
 		lancerJeu();
 	}      
 }

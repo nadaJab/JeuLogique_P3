@@ -1,13 +1,13 @@
 package jeu;
 
+import java.util.Properties;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Scanner;
 
 class StrSaisieException extends NumberFormatException {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public StrSaisieException(String msg) {
@@ -21,9 +21,6 @@ class StrSaisieException extends NumberFormatException {
 
 class StrTailleException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public StrTailleException(String msg) {
@@ -38,11 +35,10 @@ class StrTailleException extends Exception {
 
 public abstract class Jeu {
 
-
-	private int nbCase = 4;
+	private int nbCase;
 	private int nbEssai;
-	Scanner sc = new Scanner(System.in);
-
+	private Scanner sc = new Scanner(System.in);
+	private Properties prop = new Properties();
 	/**
 	 * la variable qui reprèsente le résultat de la méthode "void compare()".
 	 * Elle est de type boolean.
@@ -59,11 +55,34 @@ public abstract class Jeu {
 	protected int combiEssai1[] =  new int[getNbCase()];
 	protected String str = "";
 
+
+	public void lecturePropertis() {
+		
+		String file = "resources\\config.properties";
+		InputStream fins = getClass().getClassLoader().getResourceAsStream(file); 	
+		try 
+		{
+			if(fins!=null)
+				prop.load(fins);   
+
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Cette méthode retourne le nombre de case à utiliser pour chaque jeu.
 	 * @return nbCase
 	 */
 	public int getNbCase() {
+		
+		lecturePropertis();
+		String resu = prop.getProperty("nbCase");
+		nbCase = Integer.parseInt(resu.replaceAll("\\|\\]|,|\\s", ""));  
+	
 		return nbCase;
 	}
 
@@ -72,6 +91,10 @@ public abstract class Jeu {
 	 * @return nbEssai
 	 */
 	public int getNbEssai() {
+		
+		lecturePropertis();
+		String resu = prop.getProperty("nbEssai");
+		nbEssai = Integer.parseInt(resu.replaceAll("\\|\\]|,|\\s", ""));  
 		return nbEssai;
 	}
 
@@ -225,37 +248,35 @@ public abstract class Jeu {
 	 **/ 
 	public void devinerDefenseur() {
 
-		System.out.println("Donner votre combinaison secrète");
-		boolean saisieOk = true;
+		boolean saisieOk = false;
 		do {
-
+			System.out.println("Donner votre combinaison secrète");
 			try {
-				saisieOk = true;
+
 				combiSecrete = saisieCombiHumain();
+				saisieOk = true;
 
 			} catch (StrSaisieException e) {
 				System.out.println(e.getMessage());
-				saisieOk = false;
 			}
 			catch (StrTailleException e) {
 				System.out.println(e.getMessage());	
-				saisieOk = false;
 			}
 		}while( !saisieOk );  
 
-//**********
+		//**********
 		int tabMin[] = new int[getNbCase()];
 		int tabMax[] = new int[getNbCase()];
 		for(int i = 0; i < getNbCase(); i++) {
 			tabMax[i] = 9;		
 		}
-//***********
+		//***********
 		do {
 
 			combiEssai = genPropOrdinateur(combiEssai, str,tabMin,tabMax);
-			
+
 			comparerRes2 = comparer(combiEssai, combiSecrete);
-			
+
 			if(!comparerRes2) {
 
 				str=resultatComparer(combiEssai, combiSecrete);
@@ -302,29 +323,29 @@ public abstract class Jeu {
 	 * @exception StrSaisieException, StrTailleException 
 	 **/
 	public void devinerDuel() {
-		
+
 		int tabMin[] = new int[getNbCase()];
 		int tabMax[] = new int[getNbCase()];
 		for(int i = 0; i < getNbCase(); i++) {
 			tabMax[i] = 9;		
 		}
-		boolean saisieOk = true;
+		boolean saisieOk = false;
 		System.out.println("Donner votre combinaison secrète");
 
 		do {
 			try {
-				saisieOk = true;
 				combiSecrete = saisieCombiHumain();
+				saisieOk = true;
 
 			} catch (StrSaisieException e) {
 
 				System.out.println(e.getMessage());
-				saisieOk = false;
+
 			}
 			catch (StrTailleException e) {
 
 				System.out.println(e.getMessage());	
-				saisieOk = false;
+
 			} 
 		}while(!saisieOk);
 
@@ -345,44 +366,41 @@ public abstract class Jeu {
 
 			do {
 				try {
-					saisieOk = true;
 					combiEssai1 = saisieCombiHumain();
+					saisieOk = true;
 
+					comparerRes = comparer(combiEssai1, combiSecrete1);
+
+					if (!comparerRes) {
+
+						str=resultatComparer(combiEssai, combiSecrete);
+						System.out.println("Proposition : " + Arrays.toString(combiEssai1).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");
+
+						try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e) {}
+
+						System.out.println("Proposition de l'ordinateur");	
+
+						combiEssai = genPropOrdinateur(combiEssai, str,tabMin,tabMax);
+						comparerRes2 = comparer(combiEssai, combiSecrete);
+
+						if(!comparerRes2) {
+
+							str=resultatComparer(combiEssai, combiSecrete);
+							System.out.println("Proposition : " + Arrays.toString(combiEssai).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");				}
+					}
+
+					nbEssai ++;		
 				} catch (StrSaisieException e) {
 					System.out.println(e.getMessage());
-					saisieOk = false;
 
 				}
 				catch (StrTailleException e) {
 					System.out.println(e.getMessage());	
-					saisieOk = false;
+
 				} 
 			}while(!saisieOk);
-
-			comparerRes = comparer(combiEssai1, combiSecrete1);
-
-			if (!comparerRes) {
-				
-				str=resultatComparer(combiEssai, combiSecrete);
-				System.out.println("Proposition : " + Arrays.toString(combiEssai).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");
-
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {}
-
-				System.out.println("Proposition de l'ordinateur");	
-
-				combiEssai = genPropOrdinateur(combiEssai, str,tabMin,tabMax);
-				comparerRes2 = comparer(combiEssai, combiSecrete);
-
-				if(!comparerRes2) {
-
-					str=resultatComparer(combiEssai, combiSecrete);
-					System.out.println("Proposition : " + Arrays.toString(combiEssai).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");				}
-			}
-
-			nbEssai ++;		
-
 		}while(!(comparerRes || comparerRes2 ||  nbEssai>5));
 	}
 
