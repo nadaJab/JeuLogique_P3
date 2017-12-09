@@ -1,15 +1,48 @@
 package jeu;
 
 import java.io.Serializable;
+import java.util.Properties;
 
 public class PlusMoins extends Jeu implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private String str;
-	
 
 	/**
-	 * Cette méthode est abstract.Elle retourne un résultat de type String de la comparaison 
+	 * @see #lecturePropertis() dans la classe Jeu
+	 */
+	public Properties lecturePropertis() {
+		return super.lecturePropertis();
+	}
+
+	/**
+	 * @see #getNbCase() dans la classe Jeu
+	 */
+	public int getNbCase() {
+		int nbCase = super.getNbCase();
+
+		Properties prop = lecturePropertis();
+		String resu = prop.getProperty("nbCasePlusMoins");
+		nbCase = Integer.parseInt(resu.replaceAll("\\ ", ""));  
+
+		return nbCase;
+	}
+
+	/**
+	 * @see #getNbEssai() dans la classe Jeu
+	 */
+	public int getNbEssai() {
+		int nbEssai = super.getNbCase();
+
+		Properties prop = lecturePropertis();
+		String resu = prop.getProperty("nbEssaiPlusMoins");
+		nbEssai = Integer.parseInt(resu.replaceAll("\\ ", ""));  
+
+		return nbEssai;
+	}
+
+	/**
+	 * Cette méthode retourne un résultat de type String d'une comparaison 
 	 * entre une combinaison secrète et une proposition donnée.   
 	 * @param combiSecrete 
 	 * @param combiEssai
@@ -34,21 +67,21 @@ public class PlusMoins extends Jeu implements Serializable{
 		} 	
 		return str;
 	}
-	
+
 	/**
 	 *Cette méthode permet d'affiner l'intervalle [min max] de la méthode genCombiOrdinateur()
 	 *@return minMax[][]
 	 *@see genCombiOrdinateur()
 	 */
 	public int[][] affinerMaxMin(int[] proposition1, String str) {
-		
+
 		int minMax[][] = new int[getNbCase()][2];
-		
+
 		for(int i = 0; i < getNbCase(); i++) {
-				
-				minMax[i][0] = 0;		
-				minMax[i][1] = 9;		
-			}
+
+			minMax[i][0] = 0;		
+			minMax[i][1] = 9;		
+		}
 		if(str != "" ) {
 
 			for(int i=0; i<getNbCase();i++) {

@@ -37,10 +37,9 @@ public abstract class Jeu {
 
 	private int nbCase;
 	private int nbEssai;
-	private int essai_config;
 	private Scanner sc = new Scanner(System.in);
 	private Properties prop = new Properties();
-	
+	private boolean modeDv = false;
 	
 	/**
 	 * la variable qui reprèsente le résultat de la méthode "void compare()".
@@ -61,7 +60,11 @@ public abstract class Jeu {
 	protected int minMax[][] = new int[getNbCase()][2];
 	
 	
-	public void lecturePropertis() {
+	/**
+	 * Cette méthode permet la lecture du fichier config.properties
+	 * @return prop
+	 */
+	public Properties lecturePropertis() {
 		
 		String file = "resources\\config.properties";
 		InputStream fins = getClass().getClassLoader().getResourceAsStream(file); 	
@@ -76,6 +79,7 @@ public abstract class Jeu {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		return prop;
 	}
 
 	/**
@@ -83,11 +87,6 @@ public abstract class Jeu {
 	 * @return nbCase
 	 */
 	public int getNbCase() {
-		
-		lecturePropertis();
-		String resu = prop.getProperty("nbCase");
-		nbCase = Integer.parseInt(resu.replaceAll("\\*", ""));  
-	
 		return nbCase;
 	}
 
@@ -96,19 +95,7 @@ public abstract class Jeu {
 	 * @return nbEssai
 	 */
 	public int getNbEssai() {
-		
-		lecturePropertis();
-		String resu = prop.getProperty("nbEssai");
-		nbEssai = Integer.parseInt(resu.replaceAll("\\*", ""));  
 		return nbEssai;
-	}
-
-	public int[] getCombiSecrete() {
-		return combiSecrete;
-	}
-
-	public int[] getCombiEssai() {
-		return combiEssai;
 	}
 	
 	public abstract int[][] affinerMaxMin(int[] proposition1, String str) ;
@@ -183,7 +170,7 @@ public abstract class Jeu {
 	}
 
 	/**
-	 * Cette méthode est abstract.Elle retourne un résultat de type String de la comparaison 
+	 * Cette méthode est abstract.Elle retourne un résultat de type String d'une comparaison 
 	 * entre une combinaison secrète et une proposition donnée.   
 	 * @param combiEssai
 	 * @param combiSecrete
@@ -200,7 +187,11 @@ public abstract class Jeu {
 		combiSecrete = genCombiOrdinateur(); 
 
 		System.out.println("L'ordinateur a donné sa combinaison secrète");
+		
+		if(modeDv) {
 		System.out.println(Arrays.toString(combiSecrete).replaceAll("\\[|\\]|,|\\s", ""));
+		}
+		
 		System.out.println("Donner votre proposition !! ");
 
 		do {
@@ -345,8 +336,9 @@ public abstract class Jeu {
 		combiSecrete1 = genCombiOrdinateur();
 		System.out.println("L'ordinateur a donné sa combinaison secrète");
 
+		if(modeDv) {
 		System.out.println(Arrays.toString(combiSecrete1).replaceAll("\\[|\\]|,|\\s", ""));
-
+		}
 
 		System.out.println("C'est partie !!");
 		do {
