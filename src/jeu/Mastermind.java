@@ -22,7 +22,7 @@ public class Mastermind extends Jeu implements Serializable{
 		Properties prop = lecturePropertis();
 		int nbCase = super.getNbCase();
 		String resu = prop.getProperty("nbCasenbCaseMastermind");
-		nbCase = Integer.parseInt(resu.replaceAll("\\ ", ""));  
+		nbCase = Integer.parseInt(resu);  
 
 		return nbCase;
 	}
@@ -35,7 +35,7 @@ public class Mastermind extends Jeu implements Serializable{
 
 		Properties prop = lecturePropertis();
 		String resu = prop.getProperty("nbEssaiMastermind");
-		nbEssai = Integer.parseInt(resu.replaceAll("\\ ", ""));  
+		nbEssai = Integer.parseInt(resu);  
 
 		return nbEssai;
 	}

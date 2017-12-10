@@ -215,7 +215,7 @@ public abstract class Jeu {
 				System.out.println(e.getMessage());	
 			} 
 
-		}while(!(comparerRes ||  nbEssai>5));
+		}while(!(comparerRes ||  nbEssai > getNbEssai()));
 	}
 
 	/**
@@ -275,7 +275,7 @@ public abstract class Jeu {
 
 			nbEssai ++;
 
-		}while(!(comparerRes2 ||  nbEssai>5));
+		}while(!(comparerRes2 ||  nbEssai > getNbEssai()));
 
 	}
 
@@ -384,7 +384,7 @@ public abstract class Jeu {
 
 				} 
 			}while(!saisieOk);
-		}while(!(comparerRes || comparerRes2 ||  nbEssai>5));
+		}while(!(comparerRes || comparerRes2 ||  nbEssai > getNbEssai()));
 	}
 
 	/**

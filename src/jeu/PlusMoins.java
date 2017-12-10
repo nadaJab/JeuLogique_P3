@@ -23,7 +23,7 @@ public class PlusMoins extends Jeu implements Serializable{
 
 		Properties prop = lecturePropertis();
 		String resu = prop.getProperty("nbCasePlusMoins");
-		nbCase = Integer.parseInt(resu.replaceAll("\\ ", ""));  
+		nbCase = Integer.parseInt(resu);  
 
 		return nbCase;
 	}
@@ -36,7 +36,7 @@ public class PlusMoins extends Jeu implements Serializable{
 
 		Properties prop = lecturePropertis();
 		String resu = prop.getProperty("nbEssaiPlusMoins");
-		nbEssai = Integer.parseInt(resu.replaceAll("\\ ", ""));  
+		nbEssai = Integer.parseInt(resu);  
 
 		return nbEssai;
 	}
