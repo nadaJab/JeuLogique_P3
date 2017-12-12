@@ -9,8 +9,8 @@ public class Main {
 	private static int mode;
 	private static int choix;	
 	private static int choixRejouer;
-	private static Scanner sc = new Scanner(System.in);
-	
+	private static Scanner sc;
+
 	public static String menuJeu() {
 		String str;
 		str = "*****************************\n";
@@ -58,6 +58,7 @@ public class Main {
 	 * @throws IllegalArgumentException
 	 */
 	public static int saisieMode() throws IllegalArgumentException {
+		sc = new Scanner(System.in);
 		mode= sc.nextInt();
 
 		if (mode < 1 || mode > 3 ) {
@@ -117,6 +118,7 @@ public class Main {
 	 * @throws InputMismatchException
 	 */
 	public static int saisieCorrecte() throws IllegalArgumentException {
+		sc = new Scanner(System.in);
 		choix = sc.nextInt();
 
 		if (choix < 1 || choix > 2 ) {
@@ -133,28 +135,11 @@ public class Main {
 		boolean saisiOk = false; 
 
 		do	 {
-
 			System.out.println( menuJeu());
 
 			try {
 				saisieCorrecte();
 				saisiOk = true; 
-
-				if(choix == 1) {
-					jeu = new PlusMoins();
-					choixMode(jeu);
-
-				}	
-				else if(choix == 2) {
-					jeu = new Mastermind();
-					choixMode(jeu);
-				} 
-
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {}
-
-				finPartie(); 
 
 			}catch (IllegalArgumentException e) {
 				System.out.println(e.getMessage());
@@ -163,6 +148,22 @@ public class Main {
 				System.out.println("Erreur de saisi");
 			}
 		}while(!saisiOk);
+
+		if(choix == 1) {
+			jeu = new PlusMoins();
+			choixMode(jeu);
+
+		}	
+		else if(choix == 2) {
+			jeu = new Mastermind();
+			choixMode(jeu);
+		} 
+
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {}
+
+		finPartie(); 
 	} 
 
 	/**
@@ -171,7 +172,7 @@ public class Main {
 	 * @throws IllegalArgumentException
 	 */
 	public static int saisiFinPartie() throws IllegalArgumentException {
-		
+		sc = new Scanner(System.in);
 		choixRejouer= sc.nextInt();
 
 		if (choixRejouer < 1 || choixRejouer > 3 ) {
@@ -233,7 +234,7 @@ public class Main {
 
 
 	public static void main (String[] args) {
-		
+
 		lancerJeu();
 	}      
 }
