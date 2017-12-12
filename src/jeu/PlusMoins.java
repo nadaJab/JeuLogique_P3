@@ -1,5 +1,7 @@
 package jeu;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Properties;
 
@@ -8,37 +10,23 @@ public class PlusMoins extends Jeu implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String str;
 
-	/**
-	 * @see #lecturePropertis() dans la classe Jeu
-	 */
-	public Properties lecturePropertis() {
-		return super.lecturePropertis();
-	}
+	public PlusMoins() {
 
-	/**
-	 * @see #getNbCase() dans la classe Jeu
-	 */
-	public int getNbCase() {
-		int nbCase = super.getNbCase();
+		
+		Properties properties = new Properties();
+		InputStream input = getClass().getClassLoader().getResourceAsStream("resources/config.properties"); 	
 
-		Properties prop = lecturePropertis();
-		String resu = prop.getProperty("nbCasePlusMoins");
-		nbCase = Integer.parseInt(resu);  
+		try{
+			properties.load(input);
+			input.close();
 
-		return nbCase;
-	}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		this.nbCase = Integer.parseInt(properties.getProperty("nbCasePlusMoins"));
+		this.nbEssai = Integer.parseInt(properties.getProperty("nbEssaiPlusMoins"));  
 
-	/**
-	 * @see #getNbEssai() dans la classe Jeu
-	 */
-	public int getNbEssai() {
-		int nbEssai = super.getNbCase();
-
-		Properties prop = lecturePropertis();
-		String resu = prop.getProperty("nbEssaiPlusMoins");
-		nbEssai = Integer.parseInt(resu);  
-
-		return nbEssai;
 	}
 
 	/**
@@ -73,7 +61,7 @@ public class PlusMoins extends Jeu implements Serializable{
 	 *@return minMax[][]
 	 *@see genCombiOrdinateur()
 	 */
-	public int[][] affinerMaxMin(int[] proposition1, String str) {
+	public int[][] affinerMaxMin(int[] combiEssaiOrdi, String str) {
 
 		int minMax[][] = new int[getNbCase()][2];
 
@@ -86,14 +74,14 @@ public class PlusMoins extends Jeu implements Serializable{
 
 			for(int i=0; i<getNbCase();i++) {
 				if(str.charAt(i) == '+') {
-					minMax[i][0] = proposition1[i] + 1;
+					minMax[i][0] = combiEssaiOrdi[i] + 1;
 				}
 				else if(str.charAt(i) == '-') {
-					minMax[i][1] = proposition1[i] - 1;
+					minMax[i][1] = combiEssaiOrdi[i] - 1;
 				}
 				else if(str.charAt(i) == '=') {
-					minMax[i][0] = proposition1[i];
-					minMax[i][1] = proposition1[i];
+					minMax[i][0] = combiEssaiOrdi[i];
+					minMax[i][1] = combiEssaiOrdi[i];
 				}
 			}
 		}

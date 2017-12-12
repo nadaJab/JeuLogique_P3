@@ -1,6 +1,7 @@
 package jeu;
 
 import java.util.Properties;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -35,52 +36,23 @@ class StrTailleException extends Exception {
 
 public abstract class Jeu {
 
-	private int nbCase;
-	private int nbEssai;
+	protected int nbCase;
+	protected int nbEssai;
 	private Scanner sc = new Scanner(System.in);
-	private Properties prop = new Properties();
-	private boolean modeDv = false;
-	
-	/**
-	 * la variable qui reprèsente le résultat de la méthode "void compare()".
-	 * Elle est de type boolean.
-	 * @see PlusMoins#comparer(String, String);
-	 */
-	private boolean comparerRes = false;
-	private boolean comparerRes2 = false;
+	//private boolean modeDv = false;
 
+	private int combiSecrete[] =  new int[getNbCase()];
+	private int combiEssai[] =   new int[getNbCase()];
 
-	protected int combiSecrete[] =  new int[getNbCase()];
-	protected int combiEssai[] =   new int[getNbCase()];
-
-	protected int combiSecrete1[] =  new int[getNbCase()];
-	protected int combiEssai1[] =  new int[getNbCase()];
-	protected String str = "";
+	private int combiSecrete1[] =  new int[getNbCase()];
+	private int combiEssai1[] =  new int[getNbCase()];
+	private String str = "";
 
 	protected int minMax[][] = new int[getNbCase()][2];
-	
-	
-	/**
-	 * Cette méthode permet la lecture du fichier config.properties
-	 * @return prop
-	 */
-	public Properties lecturePropertis() {
-		
-		String file = "resources\\config.properties";
-		InputStream fins = getClass().getClassLoader().getResourceAsStream(file); 	
-		try 
-		{
-			if(fins!=null)
-				prop.load(fins);   
 
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return prop;
-	}
+	private boolean comparerRes = false;
+	private boolean comparerRes2 = false;
+	
 
 	/**
 	 * Cette méthode retourne le nombre de case à utiliser pour chaque jeu.
@@ -97,9 +69,9 @@ public abstract class Jeu {
 	public int getNbEssai() {
 		return nbEssai;
 	}
-	
+
 	public abstract int[][] affinerMaxMin(int[] proposition1, String str) ;
-	
+
 	/**
 	 * Cette méthode permet de remplir un tableau qui reprèsente une combinaison  donné par l'ordinateur.
 	 * Ensuite, convertir ce tableau en un String.
@@ -187,11 +159,11 @@ public abstract class Jeu {
 		combiSecrete = genCombiOrdinateur(); 
 
 		System.out.println("L'ordinateur a donné sa combinaison secrète");
-		
-		if(modeDv) {
+
+		//if(modeDv) {
 		System.out.println(Arrays.toString(combiSecrete).replaceAll("\\[|\\]|,|\\s", ""));
-		}
-		
+		//}
+
 		System.out.println("Donner votre proposition !! ");
 
 		do {
@@ -336,9 +308,9 @@ public abstract class Jeu {
 		combiSecrete1 = genCombiOrdinateur();
 		System.out.println("L'ordinateur a donné sa combinaison secrète");
 
-		if(modeDv) {
+		//if(modeDv) {
 		System.out.println(Arrays.toString(combiSecrete1).replaceAll("\\[|\\]|,|\\s", ""));
-		}
+		//}
 
 		System.out.println("C'est partie !!");
 		do {
