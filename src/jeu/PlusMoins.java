@@ -10,20 +10,8 @@ public class PlusMoins extends Jeu implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String str;
 
-	public PlusMoins() {
+	protected PlusMoins() {
 
-		
-		Properties properties = new Properties();
-		InputStream input = getClass().getClassLoader().getResourceAsStream("resources/config.properties"); 	
-
-		try{
-			properties.load(input);
-			input.close();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 		this.nbCase = Integer.parseInt(properties.getProperty("nbCasePlusMoins"));
 		this.nbEssai = Integer.parseInt(properties.getProperty("nbEssaiPlusMoins"));  
 

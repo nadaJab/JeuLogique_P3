@@ -1,10 +1,9 @@
 package jeu;
 
-import java.util.Properties;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Properties;
 import java.util.Scanner;
 
 class StrSaisieException extends NumberFormatException {
@@ -36,10 +35,12 @@ class StrTailleException extends Exception {
 
 public abstract class Jeu {
 
-	protected int nbCase;
-	protected int nbEssai;
+	protected int nbCase = 4;
+	protected int nbEssai = 10;
 	private Scanner sc = new Scanner(System.in);
-	//private boolean modeDv = false;
+	protected Properties properties = new Properties();
+	
+	private boolean modeDv;
 
 	private int combiSecrete[] =  new int[getNbCase()];
 	private int combiEssai[] =   new int[getNbCase()];
@@ -53,7 +54,20 @@ public abstract class Jeu {
 	private boolean comparerRes = false;
 	private boolean comparerRes2 = false;
 	
+	
+	protected Jeu() {
+		InputStream input = getClass().getClassLoader().getResourceAsStream("resources/config.properties"); 	
 
+		try{
+			properties.load(input);
+			input.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		this.modeDv = Boolean.parseBoolean(properties.getProperty("modeDv"));
+	}
+	
 	/**
 	 * Cette méthode retourne le nombre de case à utiliser pour chaque jeu.
 	 * @return nbCase
@@ -160,9 +174,11 @@ public abstract class Jeu {
 
 		System.out.println("L'ordinateur a donné sa combinaison secrète");
 
-		//if(modeDv) {
+		if(modeDv) {
+			
 		System.out.println(Arrays.toString(combiSecrete).replaceAll("\\[|\\]|,|\\s", ""));
-		//}
+		
+		}
 
 		System.out.println("Donner votre proposition !! ");
 
@@ -308,9 +324,11 @@ public abstract class Jeu {
 		combiSecrete1 = genCombiOrdinateur();
 		System.out.println("L'ordinateur a donné sa combinaison secrète");
 
-		//if(modeDv) {
+		if(modeDv) {
+			
 		System.out.println(Arrays.toString(combiSecrete1).replaceAll("\\[|\\]|,|\\s", ""));
-		//}
+		
+		}
 
 		System.out.println("C'est partie !!");
 		do {

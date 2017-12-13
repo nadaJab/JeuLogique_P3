@@ -1,28 +1,11 @@
 package jeu;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Properties;
 
 public class Mastermind extends Jeu implements Serializable{	
 
 	private static final long serialVersionUID = 1L;
 
-	public Mastermind() {
-
-
-		Properties properties = new Properties();
-		InputStream input = getClass().getClassLoader().getResourceAsStream("resources/config.properties"); 	
-
-		try{
-			properties.load(input);
-			input.close();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	protected Mastermind() {
 
 		this.nbCase = Integer.parseInt(properties.getProperty("nbCaseMastermind"));
 		this.nbEssai = Integer.parseInt(properties.getProperty("nbEssaiMastermind"));  
