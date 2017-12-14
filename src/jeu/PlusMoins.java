@@ -1,14 +1,11 @@
 package jeu;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.util.Properties;
 
 public class PlusMoins extends Jeu implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private String str;
+	private String str="";
 
 	protected PlusMoins() {
 
@@ -28,7 +25,7 @@ public class PlusMoins extends Jeu implements Serializable{
 
 		str = "";
 
-		for(int i = 0; i < getNbCase(); i++) {
+		for(int i = 0; i < combiEssai.length ; i++) {
 
 			if(combiEssai[i] == combiSecrete[i]) {
 				str += "=";
@@ -49,18 +46,18 @@ public class PlusMoins extends Jeu implements Serializable{
 	 *@return minMax[][]
 	 *@see genCombiOrdinateur()
 	 */
-	public int[][] affinerMaxMin(int[] combiEssaiOrdi, String str) {
+	public int[][] affinerMaxMin(int[] combiEssaiOrdi) {
 
 		int minMax[][] = new int[getNbCase()][2];
 
-		for(int i = 0; i < getNbCase(); i++) {
+		for(int i = 0; i < minMax.length; i++) {
 
 			minMax[i][0] = 0;		
 			minMax[i][1] = 9;		
 		}
 		if(str != "" ) {
 
-			for(int i=0; i<getNbCase();i++) {
+			for(int i=0; i<str.length();i++) {
 				if(str.charAt(i) == '+') {
 					minMax[i][0] = combiEssaiOrdi[i] + 1;
 				}

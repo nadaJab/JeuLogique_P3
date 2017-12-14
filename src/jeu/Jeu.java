@@ -36,7 +36,7 @@ class StrTailleException extends Exception {
 public abstract class Jeu {
 
 	protected int nbCase = 4;
-	protected int nbEssai = 10;
+	protected int nbEssai;
 	private Scanner sc = new Scanner(System.in);
 	protected Properties properties = new Properties();
 	
@@ -84,7 +84,7 @@ public abstract class Jeu {
 		return nbEssai;
 	}
 
-	public abstract int[][] affinerMaxMin(int[] proposition1, String str) ;
+	public abstract int[][] affinerMaxMin(int[] proposition1) ;
 
 	/**
 	 * Cette méthode permet de remplir un tableau qui reprèsente une combinaison  donné par l'ordinateur.
@@ -92,10 +92,10 @@ public abstract class Jeu {
 	 * @return strCombiOrdinateur
 	 */
 	public int[] genCombiOrdinateur() {
-		minMax = affinerMaxMin(combiEssai, str);
+		minMax = affinerMaxMin(combiEssai);
 		int tabCombiOrdinateur[] = new int[getNbCase()];
 
-		for(int i = 0; i < getNbCase(); i++) {
+		for(int i = 0; i < tabCombiOrdinateur.length; i++) {
 			tabCombiOrdinateur[i] = (int) (Math.random() * (minMax[i][1] - minMax[i][0] +1)) + minMax[i][0];	
 		}
 		return tabCombiOrdinateur;
