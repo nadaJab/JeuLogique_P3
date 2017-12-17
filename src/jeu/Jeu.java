@@ -169,7 +169,7 @@ public abstract class Jeu {
 	 * Elle permet au joueur humain de deviner la combinaison secrète de l'ordinateur.
 	 */
 	public void devinerChallenger() {
-
+		int Essai = 0;
 		combiSecrete = genCombiOrdinateur(); 
 
 		System.out.println("L'ordinateur a donné sa combinaison secrète");
@@ -194,7 +194,7 @@ public abstract class Jeu {
 					System.out.println("Proposition : " + Arrays.toString(combiEssai).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");
 				}
 
-				nbEssai ++;
+				Essai ++;
 
 			} catch (StrSaisieException e) {
 				System.out.println(e.getMessage());
@@ -203,7 +203,7 @@ public abstract class Jeu {
 				System.out.println(e.getMessage());	
 			} 
 
-		}while(!(comparerRes ||  nbEssai > getNbEssai()));
+		}while(!(comparerRes2 ||  Essai > getNbEssai()));
 	}
 
 	/**
@@ -229,8 +229,10 @@ public abstract class Jeu {
 	 * Elle permet à l'ordinateur de deviner la combinaison secrète de joueur humain.
 	 **/ 
 	public void devinerDefenseur() {
-
+		
+		int Essai = 0;
 		boolean saisieOk = false;
+		
 		do {
 			System.out.println("Donner votre combinaison secrète");
 			try {
@@ -261,9 +263,9 @@ public abstract class Jeu {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {}
 
-			nbEssai ++;
+			Essai ++;
 
-		}while(!(comparerRes2 ||  nbEssai > getNbEssai()));
+		}while(!(comparerRes2 ||  Essai > getNbEssai()));
 
 	}
 
@@ -298,7 +300,8 @@ public abstract class Jeu {
 	 * @exception StrSaisieException, StrTailleException 
 	 **/
 	public void devinerDuel() {
-
+		
+		int Essai = 0;
 		boolean saisieOk = false;
 		System.out.println("Donner votre combinaison secrète");
 
@@ -364,7 +367,7 @@ public abstract class Jeu {
 							System.out.println("Proposition : " + Arrays.toString(combiEssai).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");				}
 					}
 
-					nbEssai ++;		
+					Essai ++;		
 				} catch (StrSaisieException e) {
 					System.out.println(e.getMessage());
 
@@ -374,7 +377,7 @@ public abstract class Jeu {
 
 				} 
 			}while(!saisieOk);
-		}while(!(comparerRes || comparerRes2 ||  nbEssai > getNbEssai()));
+		}while(!(comparerRes || comparerRes2 ||  Essai > getNbEssai()));
 	}
 
 	/**
