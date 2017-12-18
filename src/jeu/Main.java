@@ -12,8 +12,8 @@ public class Main {
 	private static int choix;	
 	private static int choixRejouer;
 	private static Scanner sc;
-	private static Logger logger = Logger.getLogger(Main.class);
-	
+	private static Logger logger1 = Logger.getLogger(Main.class);
+
 	public static String menuJeu() {
 		String str;
 		str = "*****************************\n";
@@ -74,7 +74,7 @@ public class Main {
 	 * @param J, de type Jeu
 	 */
 	public static void choixMode(Jeu J) {
-		
+
 		boolean saisiOk = false; 
 
 		do {
@@ -106,12 +106,12 @@ public class Main {
 				}
 
 			}catch (IllegalArgumentException e) {
-				
-				logger.error(e.getMessage());
+
+				logger1.error(e.getMessage());
 			}
 			catch (InputMismatchException e) {
-				
-				logger.error("Erreur de saisi");
+
+				logger1.error("Erreur de saisi");
 			}
 
 		}while(!saisiOk);
@@ -148,11 +148,12 @@ public class Main {
 				saisiOk = true; 
 
 			}catch (IllegalArgumentException e) {
-				
-				logger.error(e.getMessage());
+
+				logger1.error(e.getMessage());
 			}
 			catch (InputMismatchException e) {
-				logger.error("Erreur de saisi");
+
+				logger1.error("Erreur de saisi");
 			}
 		}while(!saisiOk);
 
@@ -230,11 +231,12 @@ public class Main {
 				}
 
 			}catch (IllegalArgumentException e) {
-				logger.error(e.getMessage());
 
+				logger1.error(e.getMessage());
 			}
 			catch (InputMismatchException e) {
-			logger.error("Erreur de saisi");
+
+				logger1.error("Erreur de saisi");
 			}
 
 		}while(!saisiOk);
@@ -242,7 +244,7 @@ public class Main {
 
 
 	public static void main (String[] args) {
-		
+
 		lancerJeu();
 	}      
 }

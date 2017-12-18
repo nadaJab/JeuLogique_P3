@@ -40,12 +40,12 @@ class StrTailleException extends Exception {
 public abstract class Jeu {
 
 	private Logger logger = Logger.getLogger(Jeu.class);
-	
+
 	protected int nbCase = 4;
 	protected int nbEssai;
 	private Scanner sc = new Scanner(System.in);
 	protected Properties properties = new Properties();
-	
+
 	private boolean modeDv;
 
 	private int combiSecrete[] =  new int[getNbCase()];
@@ -59,10 +59,10 @@ public abstract class Jeu {
 
 	private boolean comparerRes = false;
 	private boolean comparerRes2 = false;
-	
-	
+
+
 	protected Jeu() {
-		
+
 		InputStream input = null;
 
 		try {
@@ -87,7 +87,7 @@ public abstract class Jeu {
 		this.modeDv = Boolean.parseBoolean(properties.getProperty("modeDv"));
 
 	}
-	
+
 	/**
 	 * Cette méthode retourne le nombre de case à utiliser pour chaque jeu.
 	 * @return nbCase
@@ -195,9 +195,9 @@ public abstract class Jeu {
 		System.out.println("L'ordinateur a donné sa combinaison secrète");
 
 		if(modeDv) {
-			
-		System.out.println(Arrays.toString(combiSecrete).replaceAll("\\[|\\]|,|\\s", ""));
-		
+
+			System.out.println(Arrays.toString(combiSecrete).replaceAll("\\[|\\]|,|\\s", ""));
+
 		}
 
 		System.out.println("Donner votre proposition !! ");
@@ -217,11 +217,11 @@ public abstract class Jeu {
 				Essai ++;
 
 			} catch (StrSaisieException e) {
-				
-				logger.warn(e.getMessage());
+
+				logger.error(e.getMessage());
 			}
 			catch (StrTailleException e) {
-				logger.warn(e.getMessage());
+				logger.error(e.getMessage());
 			} 
 
 		}while(!(comparerRes ||  Essai > getNbEssai()));
@@ -250,10 +250,10 @@ public abstract class Jeu {
 	 * Elle permet à l'ordinateur de deviner la combinaison secrète de joueur humain.
 	 **/ 
 	public void devinerDefenseur() {
-		
+
 		int Essai = 0;
 		boolean saisieOk = false;
-		
+
 		do {
 			System.out.println("Donner votre combinaison secrète");
 			try {
@@ -262,10 +262,10 @@ public abstract class Jeu {
 				saisieOk = true;
 
 			} catch (StrSaisieException e) {
-				logger.warn(e.getMessage());
+				logger.error(e.getMessage());
 			}
 			catch (StrTailleException e) {
-				logger.warn(e.getMessage());
+				logger.error(e.getMessage());
 			}
 		}while( !saisieOk );  
 
@@ -278,7 +278,7 @@ public abstract class Jeu {
 			if(!comparerRes2) {
 
 				str=resultatComparer(combiEssai, combiSecrete);
-				
+
 				System.out.println("Proposition : " + Arrays.toString(combiEssai).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");			}
 
 			try {
@@ -321,7 +321,7 @@ public abstract class Jeu {
 	 * @exception StrSaisieException, StrTailleException 
 	 **/
 	public void devinerDuel() {
-		
+
 		int Essai = 0;
 		boolean saisieOk = false;
 		System.out.println("Donner votre combinaison secrète");
@@ -333,12 +333,12 @@ public abstract class Jeu {
 
 			} catch (StrSaisieException e) {
 
-				logger.warn(e.getMessage());
+				logger.error(e.getMessage());
 
 			}
 			catch (StrTailleException e) {
 
-				logger.warn(e.getMessage());
+				logger.error(e.getMessage());
 
 			} 
 		}while(!saisieOk);
@@ -349,9 +349,9 @@ public abstract class Jeu {
 		System.out.println("L'ordinateur a donné sa combinaison secrète");
 
 		if(modeDv) {
-			
-		System.out.println(Arrays.toString(combiSecrete1).replaceAll("\\[|\\]|,|\\s", ""));
-		
+
+			System.out.println(Arrays.toString(combiSecrete1).replaceAll("\\[|\\]|,|\\s", ""));
+
 		}
 
 		System.out.println("C'est partie !!");
@@ -390,16 +390,16 @@ public abstract class Jeu {
 
 					Essai ++;		
 				} catch (StrSaisieException e) {
-					
-					logger.warn(e.getMessage());
+
+					logger.error(e.getMessage());
 				}
 				catch (StrTailleException e) {
-					
-					logger.warn(e.getMessage());
+
+					logger.error(e.getMessage());
 
 				} 
 			}while(!saisieOk);
-			
+
 		}while(!(comparerRes || comparerRes2 ||  Essai > getNbEssai()));
 	}
 
