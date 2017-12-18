@@ -8,11 +8,8 @@ import java.util.Arrays;
 import java.util.Properties;
 import java.util.Scanner;
 
-//import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-//import org.apache.log4j.Logger;
 
 class StrSaisieException extends NumberFormatException {
 
@@ -44,9 +41,8 @@ class StrTailleException extends Exception {
 public abstract class Jeu {
 
 	private static Logger logger =  LogManager.getLogger(Main.class);
-	//private Logger logger = Logger.getLogger(Jeu.class);
 
-	protected int nbCase = 4;
+	protected int nbCase = 2;
 	protected int nbEssai = 7;
 	private Scanner sc = new Scanner(System.in);
 	protected Properties properties = new Properties();
@@ -67,7 +63,7 @@ public abstract class Jeu {
 
 
 	protected Jeu() {
-
+		
 		InputStream input = null;
 
 		try {
@@ -76,7 +72,7 @@ public abstract class Jeu {
 
 			// télècharger le fichier properties 
 			properties.load(input);
-
+			this.modeDv = Boolean.parseBoolean(properties.getProperty("modeDv"));
 
 		} catch (final IOException ex) {
 			ex.printStackTrace();
@@ -89,8 +85,6 @@ public abstract class Jeu {
 				}
 			}
 		}
-		this.modeDv = Boolean.parseBoolean(properties.getProperty("modeDv"));
-
 	}
 
 	/**
@@ -360,10 +354,10 @@ public abstract class Jeu {
 
 		}
 
-		System.out.println("C'est partie !!");
+		System.out.println("C'est parti !!");
 		do {
 
-			System.out.println((Essai+1) + " eme tours");	
+			System.out.println((Essai+1) + " eme tour");	
 
 			System.out.println("Donner votre proposition !! ");
 

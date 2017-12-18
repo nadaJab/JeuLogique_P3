@@ -9,9 +9,10 @@ public class PlusMoins extends Jeu implements Serializable{
 
 	protected PlusMoins() {
 
-		this.nbCase = Integer.parseInt(properties.getProperty("nbCasePlusMoins"));
-		this.nbEssai = Integer.parseInt(properties.getProperty("nbEssaiPlusMoins"));  
-
+		if(!properties.isEmpty()) {
+			this.nbCase = Integer.parseInt(properties.getProperty("nbCasePlusMoins"));
+			this.nbEssai = Integer.parseInt(properties.getProperty("nbEssaiPlusMoins"));  
+		}
 	}
 
 	/**
