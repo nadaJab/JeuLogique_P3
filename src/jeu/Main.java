@@ -2,8 +2,11 @@ package jeu;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import org.apache.log4j.Logger;
 
+import org.apache.logging.log4j.Level;
+//import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Main {
 
@@ -12,8 +15,8 @@ public class Main {
 	private static int choix;	
 	private static int choixRejouer;
 	private static Scanner sc;
-	private static Logger logger1 = Logger.getLogger(Main.class);
-
+	private static Logger logger1 =  LogManager.getLogger(Main.class);
+	
 	public static String menuJeu() {
 		String str;
 		str = "*****************************\n";
@@ -106,7 +109,7 @@ public class Main {
 				}
 
 			}catch (IllegalArgumentException e) {
-
+				
 				logger1.error(e.getMessage());
 			}
 			catch (InputMismatchException e) {

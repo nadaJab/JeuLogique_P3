@@ -8,7 +8,11 @@ import java.util.Arrays;
 import java.util.Properties;
 import java.util.Scanner;
 
-import org.apache.log4j.Logger;
+//import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+//import org.apache.log4j.Logger;
 
 class StrSaisieException extends NumberFormatException {
 
@@ -39,7 +43,8 @@ class StrTailleException extends Exception {
 
 public abstract class Jeu {
 
-	private Logger logger = Logger.getLogger(Jeu.class);
+	private static Logger logger =  LogManager.getLogger(Main.class);
+	//private Logger logger = Logger.getLogger(Jeu.class);
 
 	protected int nbCase = 4;
 	protected int nbEssai;
@@ -217,10 +222,11 @@ public abstract class Jeu {
 				Essai ++;
 
 			} catch (StrSaisieException e) {
-
+				
 				logger.error(e.getMessage());
 			}
 			catch (StrTailleException e) {
+
 				logger.error(e.getMessage());
 			} 
 
