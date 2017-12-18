@@ -1,10 +1,14 @@
 package jeu;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.Scanner;
+
+import org.apache.log4j.Logger;
 
 class StrSaisieException extends NumberFormatException {
 
@@ -35,6 +39,8 @@ class StrTailleException extends Exception {
 
 public abstract class Jeu {
 
+	private Logger logger = Logger.getLogger(Jeu.class);
+	
 	protected int nbCase = 4;
 	protected int nbEssai;
 	private Scanner sc = new Scanner(System.in);
@@ -56,16 +62,30 @@ public abstract class Jeu {
 	
 	
 	protected Jeu() {
-		InputStream input = getClass().getClassLoader().getResourceAsStream("resources/config.properties"); 	
+		
+		InputStream input = null;
 
-		try{
+		try {
+
+			input = new FileInputStream("resources/config.properties");
+
+			// télècharger le fichier properties 
 			properties.load(input);
-			input.close();
 
-		} catch (IOException e) {
-			e.printStackTrace();
+
+		} catch (final IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (final IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		this.modeDv = Boolean.parseBoolean(properties.getProperty("modeDv"));
+
 	}
 	
 	/**
@@ -197,13 +217,14 @@ public abstract class Jeu {
 				Essai ++;
 
 			} catch (StrSaisieException e) {
-				System.out.println(e.getMessage());
+				
+				logger.warn(e.getMessage());
 			}
 			catch (StrTailleException e) {
-				System.out.println(e.getMessage());	
+				logger.warn(e.getMessage());
 			} 
 
-		}while(!(comparerRes2 ||  Essai > getNbEssai()));
+		}while(!(comparerRes ||  Essai > getNbEssai()));
 	}
 
 	/**
@@ -241,10 +262,10 @@ public abstract class Jeu {
 				saisieOk = true;
 
 			} catch (StrSaisieException e) {
-				System.out.println(e.getMessage());
+				logger.warn(e.getMessage());
 			}
 			catch (StrTailleException e) {
-				System.out.println(e.getMessage());	
+				logger.warn(e.getMessage());
 			}
 		}while( !saisieOk );  
 
@@ -257,6 +278,7 @@ public abstract class Jeu {
 			if(!comparerRes2) {
 
 				str=resultatComparer(combiEssai, combiSecrete);
+				
 				System.out.println("Proposition : " + Arrays.toString(combiEssai).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");			}
 
 			try {
@@ -290,8 +312,7 @@ public abstract class Jeu {
 	 * Cette méthode est spécifique pour le <<mode duel>>.
 	 * Elle permet à l'ordinateur de deviner la combinaison secrète de joueur humain 
 	 * et aussi elle permet au joueur humain de deviner la combinaison secrète de l'ordinateur.
-	 * Le premier qui trouve la combinaison secrète de l'autre est gagnant. 
-	 * 
+	 * Le premier qui trouve la combinaison secrète de l'autre gagne. 
 	 * @param combiSecrete , donné par le joueur humain
 	 * @param combiSecrete1, donné par lejoueur ordinateur
 	 * @param combiEssai, proposition du joueur ordinateur
@@ -312,12 +333,12 @@ public abstract class Jeu {
 
 			} catch (StrSaisieException e) {
 
-				System.out.println(e.getMessage());
+				logger.warn(e.getMessage());
 
 			}
 			catch (StrTailleException e) {
 
-				System.out.println(e.getMessage());	
+				logger.warn(e.getMessage());
 
 			} 
 		}while(!saisieOk);
@@ -336,7 +357,7 @@ public abstract class Jeu {
 		System.out.println("C'est partie !!");
 		do {
 
-			System.out.println((nbEssai+1) + " eme tours");	
+			System.out.println((Essai+1) + " eme tours");	
 
 			System.out.println("Donner votre proposition !! ");
 
@@ -369,14 +390,16 @@ public abstract class Jeu {
 
 					Essai ++;		
 				} catch (StrSaisieException e) {
-					System.out.println(e.getMessage());
-
+					
+					logger.warn(e.getMessage());
 				}
 				catch (StrTailleException e) {
-					System.out.println(e.getMessage());	
+					
+					logger.warn(e.getMessage());
 
 				} 
 			}while(!saisieOk);
+			
 		}while(!(comparerRes || comparerRes2 ||  Essai > getNbEssai()));
 	}
 

@@ -74,7 +74,7 @@ public class Mastermind extends Jeu implements Serializable{
 			}
 			else if(indice[i]== 1) {
 				nb1++;
-				str2 = nb1 + " présnt(s) ";	
+				str2 = nb1 + " présent(s) ";	
 			}
 		  }
 		str = str1 + " "  + str2;
@@ -87,7 +87,7 @@ public class Mastermind extends Jeu implements Serializable{
 	 * 
 	 */
 	public int[][] affinerMaxMin(int[] proposition1) {
-
+		
 		int minMax[][] = new int[getNbCase()][2];
 
 		for(int i = 0; i < minMax.length ; i++) {
@@ -95,22 +95,24 @@ public class Mastermind extends Jeu implements Serializable{
 			minMax[i][0] = 0;		
 			minMax[i][1] = 9;		
 		}
-		/*
-		if(indice != null ) {
-
+		
+		if(indice != null) {
 			for(int i=0; i < indice.length ; i++) {
-				if(indice[i] == ' ') {
-					minMax[i][0] = proposition1[i] + 1;
-				}
-				else if(indice[i] == 'P') {
-					minMax[i][1] = proposition1[i] - 1;
-				}
-				else if(indice[i] == 'B') {
+				
+				if(indice[i] == 2) {
+					
 					minMax[i][0] = proposition1[i];
 					minMax[i][1] = proposition1[i];
 				}
+				else if(indice[i] == 1) {
+					
+					minMax[indice.length - i][0] = proposition1[i];
+					minMax[indice.length - i][1] = proposition1[i];
+				}
+				
 			}
-		}*/
+		}
+		
 		return minMax;
 	}
 } 
