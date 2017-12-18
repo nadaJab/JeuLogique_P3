@@ -47,7 +47,7 @@ public abstract class Jeu {
 	//private Logger logger = Logger.getLogger(Jeu.class);
 
 	protected int nbCase = 4;
-	protected int nbEssai;
+	protected int nbEssai = 7;
 	private Scanner sc = new Scanner(System.in);
 	protected Properties properties = new Properties();
 
