@@ -349,7 +349,7 @@ public abstract class Jeu {
 		System.out.println("C'est parti !!");
 		
 		do {
-			System.out.println((Essai+1) + " tour");	
+			System.out.println((Essai+1) + " tour");
 			System.out.println("Donner votre proposition !! ");
 
 			do {
@@ -376,8 +376,11 @@ public abstract class Jeu {
 				if(!comparerRes2) {
 
 					str = resultatComparer(combiEssaiOrdi, combiSecreteHumain);
-					System.out.println("Proposition : " + Arrays.toString(combiEssaiOrdi).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");				}
-			}
+					System.out.println("Proposition : " + Arrays.toString(combiEssaiOrdi).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");				
+					}
+			    }
+			
+				Essai++;
 				} catch (StrSaisieException e) {
 
 					logger.error(e.getMessage());
@@ -386,9 +389,9 @@ public abstract class Jeu {
 
 					logger.error(e.getMessage());
 				} 
+					
 			}while(!saisieOk);
-			Essai ++;		
-			
+				
 		}while(!(comparerRes || comparerRes2 ||  Essai > getNbEssai()));
 	}
 
