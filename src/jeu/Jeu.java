@@ -42,28 +42,24 @@ public abstract class Jeu {
 
 	private static Logger logger =  LogManager.getLogger(Main.class);
 
-	protected int nbCase = 2;
+	protected int nbCase = 4;
 	protected int nbEssai = 7;
 	private Scanner sc = new Scanner(System.in);
 	protected Properties properties = new Properties();
 
 	private boolean modeDv;
 
-	private int combiSecrete[] =  new int[getNbCase()];
-	private int combiEssai[] =   new int[getNbCase()];
+	private int combiSecreteOrdi[] =  new int[getNbCase()];
+	protected int combiEssaiOrdi[] =   new int[getNbCase()];
 
-	private int combiSecrete1[] =  new int[getNbCase()];
-	private int combiEssai1[] =  new int[getNbCase()];
-	private String str = "";
-
-	protected int minMax[][] = new int[getNbCase()][2];
-
+	protected int combiSecreteHumain[] =  new int[getNbCase()];
+	private int combiEssaiHumain[] =  new int[getNbCase()];
+	
 	private boolean comparerRes = false;
 	private boolean comparerRes2 = false;
 
-
 	protected Jeu() {
-		
+
 		InputStream input = null;
 
 		try {
@@ -103,22 +99,12 @@ public abstract class Jeu {
 		return nbEssai;
 	}
 
-	public abstract int[][] affinerMaxMin(int[] proposition1) ;
+	//public abstract int[][] affinerMaxMin(int[] proposition1) ;
 
 	/**
 	 * Cette méthode permet de remplir un tableau qui reprèsente une combinaison  donné par l'ordinateur.
-	 * Ensuite, convertir ce tableau en un String.
-	 * @return strCombiOrdinateur
 	 */
-	public int[] genCombiOrdinateur() {
-		minMax = affinerMaxMin(combiEssai);
-		int tabCombiOrdinateur[] = new int[getNbCase()];
-
-		for(int i = 0; i < tabCombiOrdinateur.length; i++) {
-			tabCombiOrdinateur[i] = (int) (Math.random() * (minMax[i][1] - minMax[i][0] +1)) + minMax[i][0];	
-		}
-		return tabCombiOrdinateur;
-	}
+	public abstract int[] genCombiOrdinateur();
 
 	/**
 	 * Cette méthode permet joueur humain de saisir un nombre sous forme d'une chaine de caractère.
@@ -166,6 +152,8 @@ public abstract class Jeu {
 	 */    
 	public boolean comparer(int combiEssai[], int combiSecrete[]) {
 
+		boolean comparerRes = false;
+
 		if(Arrays.equals(combiEssai, combiSecrete)){
 
 			comparerRes = true;
@@ -189,13 +177,14 @@ public abstract class Jeu {
 	 */
 	public void devinerChallenger() {
 		int Essai = 0;
-		combiSecrete = genCombiOrdinateur(); 
+		
+		combiSecreteOrdi = genCombiOrdinateur(); 
 
 		System.out.println("L'ordinateur a donné sa combinaison secrète");
 
 		if(modeDv) {
 
-			System.out.println(Arrays.toString(combiSecrete).replaceAll("\\[|\\]|,|\\s", ""));
+			System.out.println(Arrays.toString(combiSecreteOrdi).replaceAll("\\[|\\]|,|\\s", ""));
 
 		}
 
@@ -204,19 +193,19 @@ public abstract class Jeu {
 		do {
 
 			try {
-				combiEssai = saisieCombiHumain();
+				combiEssaiHumain = saisieCombiHumain();
 
-				comparerRes = comparer(combiEssai, combiSecrete);
+				comparerRes = comparer(combiEssaiHumain, combiSecreteOrdi);
 
 				if(comparerRes == false) {
-					String str=resultatComparer(combiEssai, combiSecrete);
-					System.out.println("Proposition : " + Arrays.toString(combiEssai).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");
+					String str=resultatComparer(combiEssaiHumain, combiSecreteOrdi);
+					System.out.println("Proposition : " + Arrays.toString(combiEssaiHumain).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");
 				}
 
 				Essai ++;
 
 			} catch (StrSaisieException e) {
-				
+
 				logger.error(e.getMessage());
 			}
 			catch (StrTailleException e) {
@@ -225,6 +214,7 @@ public abstract class Jeu {
 			} 
 
 		}while(!(comparerRes ||  Essai > getNbEssai()));
+
 	}
 
 	/**
@@ -240,7 +230,7 @@ public abstract class Jeu {
 		}
 		else if(!comparerRes) {
 			str = "Aiie!! Vous avez échoué !!\n"; 
-			str += "(Combinaison secrète : " + Arrays.toString(combiSecrete).replaceAll("\\[|\\]|,|\\s", "") + ")";
+			str += "(Combinaison secrète : " + Arrays.toString(combiSecreteOrdi).replaceAll("\\[|\\]|,|\\s", "") + ")";
 		}
 		return str;
 	}
@@ -251,6 +241,8 @@ public abstract class Jeu {
 	 **/ 
 	public void devinerDefenseur() {
 
+		String str="";
+		boolean comparerRes = false;
 		int Essai = 0;
 		boolean saisieOk = false;
 
@@ -258,7 +250,7 @@ public abstract class Jeu {
 			System.out.println("Donner votre combinaison secrète");
 			try {
 
-				combiSecrete = saisieCombiHumain();
+				combiSecreteHumain = saisieCombiHumain();
 				saisieOk = true;
 
 			} catch (StrSaisieException e) {
@@ -271,15 +263,16 @@ public abstract class Jeu {
 
 		do {
 
-			combiEssai = genCombiOrdinateur();
+			combiEssaiOrdi = genCombiOrdinateur();
 
-			comparerRes2 = comparer(combiEssai, combiSecrete);
+			comparerRes = comparer(combiEssaiOrdi, combiSecreteHumain);
 
-			if(!comparerRes2) {
+			if(!comparerRes) {
 
-				str=resultatComparer(combiEssai, combiSecrete);
+				str=resultatComparer(combiEssaiOrdi, combiSecreteHumain);
 
-				System.out.println("Proposition : " + Arrays.toString(combiEssai).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");			}
+				System.out.println("Proposition : " + Arrays.toString(combiEssaiOrdi).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");		
+			}
 
 			try {
 				Thread.sleep(2000);
@@ -287,7 +280,7 @@ public abstract class Jeu {
 
 			Essai ++;
 
-		}while(!(comparerRes2 ||  Essai > getNbEssai()));
+		}while(!(comparerRes ||  Essai > getNbEssai()));
 
 	}
 
@@ -299,10 +292,10 @@ public abstract class Jeu {
 
 		String str = " ";
 
-		if(comparerRes2) {
+		if(comparerRes) {
 			str = "Aiie!! Vous avez echoué l'ordinateur a trouvé votre combinaison secrète!!\n";
 		}
-		else if(!comparerRes2) {
+		else if(!comparerRes) {
 			str = "Bravo!! Vous avez gagné, l'ordinateur n'a pas trouvé votre combinaison secrète!!\n";
 		}
 		return str;
@@ -322,13 +315,16 @@ public abstract class Jeu {
 	 **/
 	public void devinerDuel() {
 
+		String str1="";
+		String str="";
 		int Essai = 0;
 		boolean saisieOk = false;
+		
 		System.out.println("Donner votre combinaison secrète");
 
 		do {
 			try {
-				combiSecrete = saisieCombiHumain();
+				combiSecreteHumain = saisieCombiHumain();
 				saisieOk = true;
 
 			} catch (StrSaisieException e) {
@@ -339,56 +335,49 @@ public abstract class Jeu {
 			catch (StrTailleException e) {
 
 				logger.error(e.getMessage());
-
 			} 
 		}while(!saisieOk);
 
-		System.out.println(Arrays.toString(combiSecrete).replaceAll("\\[|\\]|,|\\s", ""));
-
-		combiSecrete1 = genCombiOrdinateur();
+		combiSecreteOrdi = genCombiOrdinateur();
 		System.out.println("L'ordinateur a donné sa combinaison secrète");
 
 		if(modeDv) {
 
-			System.out.println(Arrays.toString(combiSecrete1).replaceAll("\\[|\\]|,|\\s", ""));
-
+			System.out.println(Arrays.toString(combiSecreteOrdi).replaceAll("\\[|\\]|,|\\s", ""));
 		}
 
 		System.out.println("C'est parti !!");
+		
 		do {
-
-			System.out.println((Essai+1) + " eme tour");	
-
+			System.out.println((Essai+1) + " tour");	
 			System.out.println("Donner votre proposition !! ");
 
 			do {
 				try {
-					combiEssai1 = saisieCombiHumain();
+					combiEssaiHumain = saisieCombiHumain();
 					saisieOk = true;
+					
+			comparerRes = comparer(combiEssaiHumain,combiSecreteOrdi);
 
-					comparerRes = comparer(combiEssai1, combiSecrete1);
+			if (!comparerRes) {
 
-					if (!comparerRes) {
+				str1 = resultatComparer(combiEssaiHumain, combiSecreteOrdi);
+				System.out.println("Proposition : " + Arrays.toString(combiEssaiHumain).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str1 +"\n");
 
-						str=resultatComparer(combiEssai, combiSecrete);
-						System.out.println("Proposition : " + Arrays.toString(combiEssai1).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {}
 
-						try {
-							Thread.sleep(2000);
-						} catch (InterruptedException e) {}
+				System.out.println("Proposition de l'ordinateur");	
 
-						System.out.println("Proposition de l'ordinateur");	
+				combiEssaiOrdi = genCombiOrdinateur();
+				comparerRes2 = comparer(combiEssaiOrdi, combiSecreteHumain);
 
-						combiEssai = genCombiOrdinateur();
-						comparerRes2 = comparer(combiEssai, combiSecrete);
+				if(!comparerRes2) {
 
-						if(!comparerRes2) {
-
-							str=resultatComparer(combiEssai, combiSecrete);
-							System.out.println("Proposition : " + Arrays.toString(combiEssai).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");				}
-					}
-
-					Essai ++;		
+					str = resultatComparer(combiEssaiOrdi, combiSecreteHumain);
+					System.out.println("Proposition : " + Arrays.toString(combiEssaiOrdi).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");				}
+			}
 				} catch (StrSaisieException e) {
 
 					logger.error(e.getMessage());
@@ -396,10 +385,10 @@ public abstract class Jeu {
 				catch (StrTailleException e) {
 
 					logger.error(e.getMessage());
-
 				} 
 			}while(!saisieOk);
-
+			Essai ++;		
+			
 		}while(!(comparerRes || comparerRes2 ||  Essai > getNbEssai()));
 	}
 
@@ -409,7 +398,7 @@ public abstract class Jeu {
 	 */
 	public String toStringDuel() {
 
-		String str=" ";
+		String str="";
 
 		if(comparerRes && !comparerRes2) {
 			str =  "Bravo!! Vous avez deviné la combinaison secrète de l'ordinateur !!\n";
@@ -422,8 +411,8 @@ public abstract class Jeu {
 
 		else if(!comparerRes && !comparerRes2) {
 			str = "Aiie!! Vous avez échoué les deux!!\n"; 
-			str += "(Combinaison secrète ordinateur : " + Arrays.toString(combiSecrete1).replaceAll("\\[|\\]|,|\\s", "") + ")\n";
-			str += "\n(Votre combinaison secrète  : " + Arrays.toString(combiSecrete).replaceAll("\\[|\\]|,|\\s", "") + ")";
+			str += "(Combinaison secrète ordinateur : " + Arrays.toString(combiSecreteOrdi).replaceAll("\\[|\\]|,|\\s", "") + ")\n";
+			str += "\n(Votre combinaison secrète  : " + Arrays.toString(combiSecreteHumain).replaceAll("\\[|\\]|,|\\s", "") + ")";
 		}
 		return str;	
 	}

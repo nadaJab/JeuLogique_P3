@@ -5,14 +5,30 @@ import java.io.Serializable;
 public class PlusMoins extends Jeu implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private String str="";
+	private String strComparer="";
+	private int minMax[][] = new int[getNbCase()][2];
 
+	
 	protected PlusMoins() {
 
 		if(!properties.isEmpty()) {
 			this.nbCase = Integer.parseInt(properties.getProperty("nbCasePlusMoins"));
 			this.nbEssai = Integer.parseInt(properties.getProperty("nbEssaiPlusMoins"));  
 		}
+	}
+	
+	/**
+	 * Cette méthode permet de remplir un tableau qui reprèsente une combinaison  donné par l'ordinateur. 
+	 */
+	public int[] genCombiOrdinateur() {
+		minMax = affinerMaxMin();
+		
+		int tabCombiOrdinateur[] = new int[getNbCase()];
+
+		for(int i = 0; i < tabCombiOrdinateur.length; i++) {
+			tabCombiOrdinateur[i] = (int) (Math.random() * (minMax[i][1] - minMax[i][0] +1)) + minMax[i][0];	
+		}
+		return tabCombiOrdinateur;
 	}
 
 	/**
@@ -23,23 +39,23 @@ public class PlusMoins extends Jeu implements Serializable{
 	 * @return str
 	 */	
 	public String resultatComparer(int combiEssai[], int combiSecrete[]) {
+		
+		strComparer = "";
 
-		str = "";
-
-		for(int i = 0; i < combiEssai.length ; i++) {
+		for(int i = 0; i < combiSecrete.length ; i++) {
 
 			if(combiEssai[i] == combiSecrete[i]) {
-				str += "=";
+				strComparer += "=";
 			}
 			else if(combiEssai[i] < combiSecrete[i]) {
-				str +="+";
+				strComparer +="+";
 
 			}
 			else if(combiEssai[i] > combiSecrete[i]) {
-				str += "-";
+				strComparer += "-";
 			}
 		} 	
-		return str;
+		return strComparer;
 	}
 
 	/**
@@ -47,17 +63,10 @@ public class PlusMoins extends Jeu implements Serializable{
 	 *@return minMax[][]
 	 *@see genCombiOrdinateur()
 	 */
-	public int[][] affinerMaxMin(int[] combiEssaiOrdi) {
-
-		int minMax[][] = new int[getNbCase()][2];
-
-		for(int i = 0; i < minMax.length; i++) {
-
-			minMax[i][0] = 0;		
-			minMax[i][1] = 9;		
-		}
-		if(str != "" ) {
-
+	public int[][] affinerMaxMin() {
+		
+		if(strComparer != "") {
+				String str = resultatComparer(combiEssaiOrdi,combiSecreteHumain);
 			for(int i=0; i<str.length();i++) {
 				if(str.charAt(i) == '+') {
 					minMax[i][0] = combiEssaiOrdi[i] + 1;
@@ -69,6 +78,13 @@ public class PlusMoins extends Jeu implements Serializable{
 					minMax[i][0] = combiEssaiOrdi[i];
 					minMax[i][1] = combiEssaiOrdi[i];
 				}
+			}
+		}
+		else {
+			for(int i = 0; i < minMax.length; i++) {
+
+				minMax[i][0] = 0;		
+				minMax[i][1] = 9;		
 			}
 		}
 		return minMax;
