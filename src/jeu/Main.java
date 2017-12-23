@@ -114,7 +114,7 @@ public class Main {
 			}
 			catch (InputMismatchException e) {
 
-				logger1.error("Erreur de saisi");
+				logger1.error("Erreur de saisie");
 			}
 
 		}while(!saisiOk);
@@ -156,7 +156,7 @@ public class Main {
 			}
 			catch (InputMismatchException e) {
 
-				logger1.error("Erreur de saisi");
+				logger1.error("Erreur de saisie");
 			}
 		}while(!saisiOk);
 
@@ -239,7 +239,7 @@ public class Main {
 			}
 			catch (InputMismatchException e) {
 
-				logger1.error("Erreur de saisi");
+				logger1.error("Erreur de saisie");
 			}
 
 		}while(!saisiOk);
