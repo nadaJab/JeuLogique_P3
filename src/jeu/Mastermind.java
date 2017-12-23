@@ -1,11 +1,13 @@
 package jeu;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Mastermind extends Jeu implements Serializable{	
 
 	private static final long serialVersionUID = 1L;
-	int[] tabIndice;
+	private int[] tabIndice;
+	private int listePos[][] = new int[getNbCase()][10];
 
 	protected Mastermind() {
 
@@ -13,6 +15,35 @@ public class Mastermind extends Jeu implements Serializable{
 			this.nbCase = Integer.parseInt(properties.getProperty("nbCaseMastermind"));
 			this.nbEssai = Integer.parseInt(properties.getProperty("nbEssaiMastermind"));  
 		}
+	}
+
+	/**
+	 * 
+	 */
+	public int[] genCombiOrdinateur() {
+
+		int tabCombiOrdinateur[] = new int[getNbCase()];
+
+		for(int i = 0; i < tabCombiOrdinateur.length; i++) {
+			tabCombiOrdinateur[i] = (int) (Math.random() * 10);	
+		}
+		return tabCombiOrdinateur;
+	}
+
+	/**
+	 * Cette méthode permet de créer toute les combinaison possibles en fonction
+	 * du nombre de cases et de chiffres (entre 0 et 9).
+	 * @return litePos[][]
+	 */
+	public int[][] creerlistePos() {
+
+		for(int i = 0; i < getNbCase(); i++) {
+			for(int j = 0; j < 10; j++) {
+
+				listePos[i][j] = j; 	
+			}
+		}
+		return listePos;
 	}
 
 	/**
@@ -25,33 +56,38 @@ public class Mastermind extends Jeu implements Serializable{
 	 * @return resultat
 	 */
 	public String resultatComparer(int combiEssai[], int combiSecrete[]) {
+
 		tabIndice = new int[getNbCase()];
+	    ArrayList<Integer> indiceExist = new ArrayList<Integer>(); //ArrayList pour sauvegarder les indices du tableau des élements trouvés (mplacé, présent)
 		String resultat ="";
 
+		for(int i = 0; i < combiEssai.length ; i++) {
+
+			if(combiEssai[i] == combiSecrete[i]) {   // tester si il y'a des chiffres bien placés
+				tabIndice[i] = 2;	
+				indiceExist.add(i);
+			}
+		}
 
 		for(int i = 0; i < combiSecrete.length ; i++) {
-
 			for(int j = 0; j < combiEssai.length ; j++) {
-
-				if(combiEssai[j]==combiSecrete[i]) {
-
-					if(i == j) {
-						tabIndice[i] = 2;
-					}
-					else {
-						if(tabIndice[i]!= 2) {  
-							tabIndice[i] = 1;
-
-						}}}}}
-
+		
+			if( (combiEssai[j] == combiSecrete[i]) && (!indiceExist.contains(j)) && (tabIndice[i] != 2) && (tabIndice[i] != 1) ){
+				
+				tabIndice[i] = 1;
+				indiceExist.add(j);
+			}
+		}
+	}
 		resultat = TabindiceString();
 		return resultat;
-	} 
+}
+
 
 	/**
-	 * Cette méthode retourne le résultat de la comparison entre 
+	 * Cette méthode retourne le résultat de la comparaison entre 
 	 * une combinaison secrète et une proposition donnée ( bien placé, présent)
-	 * depuis le contenu du tableau indice.
+	 * à travers le contenu du tableau indice.
 	 * @see resultatComparer() 
 	 * @return str
 	 */
@@ -84,32 +120,12 @@ public class Mastermind extends Jeu implements Serializable{
 		return str;
 	}
 
-	/**
-	 * 
-	 */
-	public int[][] affinerMaxMin(int[] proposition1) {
+	@Override
+	public void setStrRes(String strResuOrdi) {
+		// TODO Auto-generated method stub
 
-		int minMax[][] = new int[getNbCase()][2];
-
-		for(int i = 0; i < minMax.length ; i++) {
-
-			minMax[i][0] = 0;		
-			minMax[i][1] = 9;		
-		}
-
-		if(tabIndice != null) {
-			for(int i=0; i < tabIndice.length ; i++) {
-
-				if((tabIndice[i] == 2)||(tabIndice[i] == 1)) {
-
-					minMax[i][0] = proposition1[i];
-					minMax[i][1] = proposition1[i];
-				}
-			}
-		}
-
-		return minMax;
 	}
+
 } 
 
 
