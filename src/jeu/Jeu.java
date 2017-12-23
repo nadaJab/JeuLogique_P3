@@ -55,9 +55,13 @@ public abstract class Jeu {
 	protected int combiSecreteHumain[] =  new int[getNbCase()];
 	private int combiEssaiHumain[] =  new int[getNbCase()];
 	
-	private boolean comparerRes = false;
-	private boolean comparerRes2 = false;
+	private boolean comparerRes = true;
+	private boolean comparerRes2 = true;
+	private String strResuOrdi = "";
 
+	/**
+	 * Constructeur qui permet la lecture du fichier conf.properties.
+	 */
 	protected Jeu() {
 
 		InputStream input = null;
@@ -105,7 +109,16 @@ public abstract class Jeu {
 	 * Cette méthode permet de remplir un tableau qui reprèsente une combinaison  donné par l'ordinateur.
 	 */
 	public abstract int[] genCombiOrdinateur();
-
+	
+	/**
+	 * Cette méthode permet d'enregistrer le résultat du comparaison
+	 * entre la combiSecreteHumain et la combiEssaiOrdi.
+	 * Elle permet en <mode duel> d'éviter la confusion entre le résultat de comparaison (combiecreteOrdi, combiEsaiHumain)
+	 * et celle voulue. Dans le but d'améliorer l’intelligence artificielle de l'ordinateur.    
+	 * @param strResuOrdi
+	 */
+    public abstract void setStrRes(String strResuOrdi);
+	
 	/**
 	 * Cette méthode permet joueur humain de saisir un nombre sous forme d'une chaine de caractère.
 	 * puis la convertir vers un tableau entier. 
@@ -242,7 +255,7 @@ public abstract class Jeu {
 	public void devinerDefenseur() {
 
 		String str="";
-		boolean comparerRes = false;
+		//boolean comparerRes = false;
 		int Essai = 0;
 		boolean saisieOk = false;
 
@@ -368,16 +381,16 @@ public abstract class Jeu {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {}
 
-				System.out.println("Proposition de l'ordinateur");	
-
+				setStrRes (strResuOrdi);
 				combiEssaiOrdi = genCombiOrdinateur();
 				comparerRes2 = comparer(combiEssaiOrdi, combiSecreteHumain);
 
 				if(!comparerRes2) {
-
-					str = resultatComparer(combiEssaiOrdi, combiSecreteHumain);
-					System.out.println("Proposition : " + Arrays.toString(combiEssaiOrdi).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");				
-					}
+					
+					System.out.println("Proposition de l'ordinateur");	
+					strResuOrdi = resultatComparer(combiEssaiOrdi, combiSecreteHumain);
+					System.out.println("Proposition : " + Arrays.toString(combiEssaiOrdi).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + strResuOrdi +"\n");				
+				}
 			    }
 			
 				Essai++;
@@ -405,7 +418,7 @@ public abstract class Jeu {
 
 		if(comparerRes && !comparerRes2) {
 			str =  "Bravo!! Vous avez deviné la combinaison secrète de l'ordinateur !!\n";
-			str += "\n L'ordinateur a échoué !!";
+			str += "\nL'ordinateur a échoué !!";
 		}
 
 		else if(!comparerRes && comparerRes2) {

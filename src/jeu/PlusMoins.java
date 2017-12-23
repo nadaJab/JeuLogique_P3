@@ -57,6 +57,11 @@ public class PlusMoins extends Jeu implements Serializable{
 		} 	
 		return strComparer;
 	}
+	
+	public void setStrRes(String strResuOrdi)
+	{
+		strComparer = strResuOrdi;
+	}
 
 	/**
 	 *Cette méthode permet d'affiner l'intervalle [min max] de la méthode genCombiOrdinateur()
@@ -66,15 +71,15 @@ public class PlusMoins extends Jeu implements Serializable{
 	public int[][] affinerMaxMin() {
 		
 		if(strComparer != "") {
-				String str = resultatComparer(combiEssaiOrdi,combiSecreteHumain);
-			for(int i=0; i<str.length();i++) {
-				if(str.charAt(i) == '+') {
+				//String str = resultatComparer(combiEssaiOrdi,combiSecreteHumain);
+			for(int i=0; i<strComparer.length();i++) {
+				if(strComparer.charAt(i) == '+') {
 					minMax[i][0] = combiEssaiOrdi[i] + 1;
 				}
-				else if(str.charAt(i) == '-') {
+				else if(strComparer.charAt(i) == '-') {
 					minMax[i][1] = combiEssaiOrdi[i] - 1;
 				}
-				else if(str.charAt(i) == '=') {
+				else if(strComparer.charAt(i) == '=') {
 					minMax[i][0] = combiEssaiOrdi[i];
 					minMax[i][1] = combiEssaiOrdi[i];
 				}
