@@ -7,7 +7,10 @@ public class Mastermind extends Jeu implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private int[] tabIndice;
-	private int listePos[][] = new int[getNbCase()][10];
+	private String strComparer = "";
+
+
+	private ArrayList<int[]> listePos = new ArrayList<int[]>((int)(Math.pow(getNbCase(), 10)));
 
 	protected Mastermind() {
 
@@ -23,43 +26,64 @@ public class Mastermind extends Jeu implements Serializable{
 	public int[] genCombiOrdinateur() {
 
 		int tabCombiOrdinateur[] = new int[getNbCase()];
+		
+		int indiceAlea = (int)(Math.random()*creerlistePos().size()); 	// Choix de l'indice dans l'ensemble des combinaisons (aléatoire)
 
-		for(int i = 0; i < tabCombiOrdinateur.length; i++) {
-			tabCombiOrdinateur[i] = (int) (Math.random() * 10);	
-		}
+		tabCombiOrdinateur = creerlistePos().get(indiceAlea);
+
 		return tabCombiOrdinateur;
 	}
 
 	/**
-	 * Cette méthode permet de créer toute les combinaison possibles en fonction
+	 * Cette méthode permet de créer toutes les combinaisons possibles en fonction
 	 * du nombre de cases et de chiffres (entre 0 et 9).
 	 * @return litePos[][]
 	 */
-	public int[][] creerlistePos() {
+	public ArrayList<int[]> creerlistePos() {
 
-		for(int i = 0; i < getNbCase(); i++) {
+		int[] tab;
+		for(int i = 0; i < 10; i++) {
 			for(int j = 0; j < 10; j++) {
+				for(int l = 0; l < 10; l++) {
+					for(int k = 0; k < 10; k++) {
 
-				listePos[i][j] = j; 	
+						tab = new int[getNbCase()];
+						tab[0] = i;
+						tab[1] = j;
+						tab[2] = l;
+						tab[3] = k;
+						listePos.add(tab);
+
+					}
+				}
 			}
 		}
+
 		return listePos;
+	}
+	
+	/**
+	 * 
+	 */
+	public void affinerListePos() {
+		
+		for(int i = 0; i < creerlistePos().size(); i++) {
+			
+		String str = resultatComparer(combiEssaiOrdi, creerlistePos().get(i));
+		}
 	}
 
 	/**
-	 * Cette méthode retourne un résultat de type String d'une comparaison 
-	 * entre une combinaison secrète et une proposition donnée.  
-	 * Dans un premier temps on a rempli le tableau indice[] par le nombre:
-	 * (2 si le chiffre est bien placé) ou (1 si le chiffre est présent) 
+	 * Comparaison de deux combinaisons indiquant le nombre de chiffres bien placés et le nombre de chiffres mal placés
 	 * @param combiSecrete 
 	 * @param combiEssai
 	 * @return resultat
 	 */
 	public String resultatComparer(int combiEssai[], int combiSecrete[]) {
 
-		tabIndice = new int[getNbCase()];
-	    ArrayList<Integer> indiceExist = new ArrayList<Integer>(); //ArrayList pour sauvegarder les indices du tableau des élements trouvés (mplacé, présent)
-		String resultat ="";
+		tabIndice = new int[getNbCase()]; // tableau d'indice avec "2" si le chiffre est bien placé ou "1" si le chiffre est présent 
+		ArrayList<Integer> indiceExist = new ArrayList<Integer>(); //ArrayList pour sauvegarder les indices du tableau des élements trouvés (mplacé, présent)
+		strComparer = "";
 
 		for(int i = 0; i < combiEssai.length ; i++) {
 
@@ -71,17 +95,17 @@ public class Mastermind extends Jeu implements Serializable{
 
 		for(int i = 0; i < combiSecrete.length ; i++) {
 			for(int j = 0; j < combiEssai.length ; j++) {
-		
-			if( (combiEssai[j] == combiSecrete[i]) && (!indiceExist.contains(j)) && (tabIndice[i] != 2) && (tabIndice[i] != 1) ){
-				
-				tabIndice[i] = 1;
-				indiceExist.add(j);
+
+				if( (combiEssai[j] == combiSecrete[i]) && (!indiceExist.contains(j)) && (tabIndice[i] != 2) && (tabIndice[i] != 1) ){
+
+					tabIndice[i] = 1;
+					indiceExist.add(j);
+				}
 			}
 		}
+		strComparer = TabindiceString();
+		return strComparer;
 	}
-		resultat = TabindiceString();
-		return resultat;
-}
 
 
 	/**
@@ -122,8 +146,8 @@ public class Mastermind extends Jeu implements Serializable{
 
 	@Override
 	public void setStrRes(String strResuOrdi) {
-		// TODO Auto-generated method stub
-
+		
+		strComparer = strResuOrdi;
 	}
 
 } 
