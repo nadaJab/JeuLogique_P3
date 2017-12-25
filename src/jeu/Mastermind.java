@@ -6,9 +6,9 @@ import java.util.Arrays;
 public class Mastermind extends Jeu implements Serializable{	
 
 	private static final long serialVersionUID = 1L;
+
 	private int[] tabIndice;
 	private String strComparer = "";
-
 
 	private ArrayList<int[]> listePos = new ArrayList<int[]>((int)(Math.pow(getNbCase(), 10)));
 
@@ -26,10 +26,18 @@ public class Mastermind extends Jeu implements Serializable{
 	public int[] genCombiOrdinateur() {
 
 		int tabCombiOrdinateur[] = new int[getNbCase()];
-		
-		int indiceAlea = (int)(Math.random()*creerlistePos().size()); 	// Choix de l'indice dans l'ensemble des combinaisons (aléatoire)
 
-		tabCombiOrdinateur = creerlistePos().get(indiceAlea);
+		if(listePos.size() == 0) {
+			creerlistePos();
+		}
+		else {
+			affinerListePos();	
+		}
+
+
+		int indiceAlea = (int)(Math.random()*listePos.size()); 	// Choix de l'indice dans l'ensemble des combinaisons (aléatoire)
+
+		tabCombiOrdinateur = listePos.get(indiceAlea);
 
 		return tabCombiOrdinateur;
 	}
@@ -39,7 +47,7 @@ public class Mastermind extends Jeu implements Serializable{
 	 * du nombre de cases et de chiffres (entre 0 et 9).
 	 * @return litePos[][]
 	 */
-	public ArrayList<int[]> creerlistePos() {
+	public void creerlistePos() {
 
 		int[] tab;
 		for(int i = 0; i < 10; i++) {
@@ -59,17 +67,33 @@ public class Mastermind extends Jeu implements Serializable{
 			}
 		}
 
-		return listePos;
+		//return listePos;
 	}
-	
+
 	/**
+	 * @return 
 	 * 
 	 */
 	public void affinerListePos() {
-		
-		for(int i = 0; i < creerlistePos().size(); i++) {
-			
-		String str = resultatComparer(combiEssaiOrdi, creerlistePos().get(i));
+
+		 // cette variable contient le résultat de la comparaison 
+		// de la combinaison secrète et la proposition de l'ordinateur
+		String strComparerCombiProp = strComparer; 
+
+		if(!strComparerCombiProp.equals("")) {
+			for(int i = 0; i < listePos.size(); i++) {
+
+				//Comparer la proposition de l'ordinateur avec toutes les combinaisons qui existent dans l'ArrayList.
+				String strComparerPropPossi = resultatComparer(listePos.get(i),combiEssaiOrdi);  
+
+				if(!strComparerPropPossi.equals(strComparerCombiProp)) {
+
+					// On supprime toutes les combinaisons qui n'ont pas le même résultat de comparaison
+					//que la proposition avec la combinaison secrète.
+					listePos.remove(i);
+					i--;
+				}
+			}
 		}
 	}
 
@@ -146,7 +170,7 @@ public class Mastermind extends Jeu implements Serializable{
 
 	@Override
 	public void setStrRes(String strResuOrdi) {
-		
+
 		strComparer = strResuOrdi;
 	}
 

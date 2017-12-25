@@ -282,7 +282,8 @@ public abstract class Jeu {
 
 			if(!comparerRes) {
 
-				str=resultatComparer(combiEssaiOrdi, combiSecreteHumain);
+				str = resultatComparer(combiEssaiOrdi, combiSecreteHumain);
+				
 
 				System.out.println("Proposition : " + Arrays.toString(combiEssaiOrdi).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");		
 			}
