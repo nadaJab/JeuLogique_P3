@@ -55,10 +55,7 @@ public abstract class Jeu {
 	protected int combiSecreteHumain[] =  new int[getNbCase()];
 	private int combiEssaiHumain[] =  new int[getNbCase()];
 	
-	private boolean comparerRes = true;
-	private boolean comparerRes2 = true;
-	private String strResuOrdi = "";
-
+	
 	/**
 	 * Constructeur qui permet la lecture du fichier conf.properties.
 	 */
@@ -189,7 +186,10 @@ public abstract class Jeu {
 	 * Elle permet au joueur humain de deviner la combinaison secrète de l'ordinateur.
 	 */
 	public void devinerChallenger() {
+		
 		int Essai = 0;
+		boolean comparerRes = false;
+		boolean saisieOk = false;
 		
 		combiSecreteOrdi = genCombiOrdinateur(); 
 
@@ -204,10 +204,12 @@ public abstract class Jeu {
 		System.out.println("Donner votre proposition !! ");
 
 		do {
-
+			do {
 			try {
+				
 				combiEssaiHumain = saisieCombiHumain();
-
+				saisieOk = true;
+				
 				comparerRes = comparer(combiEssaiHumain, combiSecreteOrdi);
 
 				if(comparerRes == false) {
@@ -225,17 +227,20 @@ public abstract class Jeu {
 
 				logger.error(e.getMessage());
 			} 
-
+			
+			}while( !saisieOk );  
+			
 		}while(!(comparerRes ||  Essai > getNbEssai()));
-
+		
+	System.out.println(toStringChallenger(comparerRes));
 	}
 
 	/**
 	 *Cette méthode permet d'afficher le résultat du jeu en mode Challenger.
 	 *@return str , une variable de type String
 	 */
-	public String toStringChallenger() {
-
+	public String toStringChallenger(boolean comparerRes) {
+		
 		String str = " ";
 
 		if(comparerRes) {
@@ -255,7 +260,7 @@ public abstract class Jeu {
 	public void devinerDefenseur() {
 
 		String str="";
-		//boolean comparerRes = false;
+		boolean comparerRes = false;
 		int Essai = 0;
 		boolean saisieOk = false;
 
@@ -295,6 +300,8 @@ public abstract class Jeu {
 			Essai ++;
 
 		}while(!(comparerRes ||  Essai > getNbEssai()));
+		
+		System.out.println(toStringDefenseur(comparerRes));
 
 	}
 
@@ -302,7 +309,7 @@ public abstract class Jeu {
 	 *Cette méthode permet d'afficher le résultat du jeu en mode Defenseur.
 	 * @return str , une variable de type String
 	 */
-	public String toStringDefenseur() {
+	public String toStringDefenseur(boolean comparerRes) {
 
 		String str = " ";
 
@@ -329,10 +336,12 @@ public abstract class Jeu {
 	 **/
 	public void devinerDuel() {
 
-		String str1="";
-		String str="";
+		String str1 = "";
+		String strResuOrdi = "";
 		int Essai = 0;
 		boolean saisieOk = false;
+		boolean comparerRes = false;
+		boolean comparerRes2 = false;
 		
 		System.out.println("Donner votre combinaison secrète");
 
@@ -407,16 +416,19 @@ public abstract class Jeu {
 			}while(!saisieOk);
 				
 		}while(!(comparerRes || comparerRes2 ||  Essai > getNbEssai()));
+		
+		System.out.println(toStringDuel(comparerRes, comparerRes2));
+
 	}
 
 	/**
 	 * Cette méthode permet d'afficher le résultat du jeu en mode Duel.
 	 * @return str , une variable de type String
 	 */
-	public String toStringDuel() {
+	public String toStringDuel(boolean comparerRes, boolean comparerRes2) {
 
 		String str="";
-
+		
 		if(comparerRes && !comparerRes2) {
 			str =  "Bravo!! Vous avez deviné la combinaison secrète de l'ordinateur !!\n";
 			str += "\nL'ordinateur a échoué !!";

@@ -91,19 +91,16 @@ public class Main {
 
 				case 1 :
 					J.devinerChallenger();
-					System.out.println(J.toStringChallenger());
-
+					
 					break;
 
 				case 2 :
 					J.devinerDefenseur();
-					System.out.println(J.toStringDefenseur());
 
 					break;
 
 				case 3 :
 					J.devinerDuel();
-					System.out.println(J.toStringDuel());
 					break;
 
 				}

@@ -67,7 +67,6 @@ public class Mastermind extends Jeu implements Serializable{
 			}
 		}
 
-		//return listePos;
 	}
 
 	/**
