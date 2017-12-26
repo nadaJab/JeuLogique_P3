@@ -3,8 +3,6 @@ package jeu;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import org.apache.logging.log4j.Level;
-//import org.apache.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -64,6 +62,7 @@ public class Main {
 	 * @throws IllegalArgumentException
 	 */
 	public static int saisieMode() throws IllegalArgumentException {
+		
 		sc = new Scanner(System.in);
 		mode= sc.nextInt();
 
@@ -107,10 +106,12 @@ public class Main {
 
 			}catch (IllegalArgumentException e) {
 				
+				System.out.println(e.getMessage());
 				logger1.error(e.getMessage());
 			}
 			catch (InputMismatchException e) {
 
+				System.out.println("Erreur de saisie");
 				logger1.error("Erreur de saisie");
 			}
 
@@ -148,11 +149,13 @@ public class Main {
 				saisiOk = true; 
 
 			}catch (IllegalArgumentException e) {
-
+				
+				System.out.println(e.getMessage());
 				logger1.error(e.getMessage());
 			}
 			catch (InputMismatchException e) {
 
+				System.out.println("Erreur de saisie");
 				logger1.error("Erreur de saisie");
 			}
 		}while(!saisiOk);
@@ -231,11 +234,13 @@ public class Main {
 				}
 
 			}catch (IllegalArgumentException e) {
-
+				
+				System.out.println(e.getMessage());
 				logger1.error(e.getMessage());
 			}
 			catch (InputMismatchException e) {
 
+				System.out.println("Erreur de saisie");
 				logger1.error("Erreur de saisie");
 			}
 

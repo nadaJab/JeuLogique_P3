@@ -145,6 +145,7 @@ public abstract class Jeu {
 		}
 
 		for(int i = 0; i < strCombiHumain.length(); i++) {
+			
 			tabCombiHumain[i] = Character.getNumericValue(strCombiHumain.charAt(i));
 		}
 
@@ -212,19 +213,20 @@ public abstract class Jeu {
 				
 				comparerRes = comparer(combiEssaiHumain, combiSecreteOrdi);
 
-				if(comparerRes == false) {
+				//if(comparerRes == false) {
 					String str=resultatComparer(combiEssaiHumain, combiSecreteOrdi);
 					System.out.println("Proposition : " + Arrays.toString(combiEssaiHumain).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");
-				}
-
+				//}
 				Essai ++;
 
 			} catch (StrSaisieException e) {
 
+				System.out.println(e.getMessage());
 				logger.error(e.getMessage());
 			}
 			catch (StrTailleException e) {
 
+				System.out.println(e.getMessage());
 				logger.error(e.getMessage());
 			} 
 			
@@ -272,11 +274,16 @@ public abstract class Jeu {
 				saisieOk = true;
 
 			} catch (StrSaisieException e) {
+				
+				System.out.println(e.getMessage());
 				logger.error(e.getMessage());
 			}
 			catch (StrTailleException e) {
+				
+				System.out.println(e.getMessage());
 				logger.error(e.getMessage());
 			}
+			
 		}while( !saisieOk );  
 
 		do {
@@ -284,14 +291,9 @@ public abstract class Jeu {
 			combiEssaiOrdi = genCombiOrdinateur();
 
 			comparerRes = comparer(combiEssaiOrdi, combiSecreteHumain);
-
-			if(!comparerRes) {
-
-				str = resultatComparer(combiEssaiOrdi, combiSecreteHumain);
-				
-
-				System.out.println("Proposition : " + Arrays.toString(combiEssaiOrdi).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");		
-			}
+			str = resultatComparer(combiEssaiOrdi, combiSecreteHumain);
+			
+			System.out.println("Proposition : " + Arrays.toString(combiEssaiOrdi).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");		
 
 			try {
 				Thread.sleep(2000);
@@ -352,13 +354,16 @@ public abstract class Jeu {
 
 			} catch (StrSaisieException e) {
 
+				System.out.println(e.getMessage());
 				logger.error(e.getMessage());
 
 			}
 			catch (StrTailleException e) {
 
+				System.out.println(e.getMessage());
 				logger.error(e.getMessage());
 			} 
+			
 		}while(!saisieOk);
 
 		combiSecreteOrdi = genCombiOrdinateur();
@@ -382,7 +387,7 @@ public abstract class Jeu {
 					
 			comparerRes = comparer(combiEssaiHumain,combiSecreteOrdi);
 
-			if (!comparerRes) {
+			//if (!comparerRes) {
 
 				str1 = resultatComparer(combiEssaiHumain, combiSecreteOrdi);
 				System.out.println("Proposition : " + Arrays.toString(combiEssaiHumain).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str1 +"\n");
@@ -395,21 +400,23 @@ public abstract class Jeu {
 				combiEssaiOrdi = genCombiOrdinateur();
 				comparerRes2 = comparer(combiEssaiOrdi, combiSecreteHumain);
 
-				if(!comparerRes2) {
+				//if(!comparerRes2) {
 					
 					System.out.println("Proposition de l'ordinateur");	
 					strResuOrdi = resultatComparer(combiEssaiOrdi, combiSecreteHumain);
 					System.out.println("Proposition : " + Arrays.toString(combiEssaiOrdi).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + strResuOrdi +"\n");				
-				}
-			    }
+				//}
+			    //}
 			
 				Essai++;
 				} catch (StrSaisieException e) {
 
+					System.out.println(e.getMessage());
 					logger.error(e.getMessage());
 				}
 				catch (StrTailleException e) {
 
+					System.out.println(e.getMessage());
 					logger.error(e.getMessage());
 				} 
 					
