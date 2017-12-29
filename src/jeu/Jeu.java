@@ -41,19 +41,21 @@ class StrTailleException extends Exception {
 public abstract class Jeu {
 
 	private static Logger logger =  LogManager.getLogger(Main.class);
-
-	protected int nbCase = 4;
-	protected int nbEssai = 7;
+	
+	protected int nbCase;
+	protected int nbEssai;
+	
 	private Scanner sc = new Scanner(System.in);
 	protected Properties properties = new Properties();
 
-	private boolean modeDv;
+	private boolean modeDv = true; //Variable booléenne qui définit le mode développeur
 
-	private int combiSecreteOrdi[] =  new int[getNbCase()];
-	protected int combiEssaiOrdi[] =   new int[getNbCase()];
+	
+	private int combiSecreteOrdi[] ;
+	protected int combiEssaiOrdi[] ;
 
-	protected int combiSecreteHumain[] =  new int[getNbCase()];
-	private int combiEssaiHumain[] =  new int[getNbCase()];
+	protected int combiSecreteHumain[] ;
+	private int combiEssaiHumain[] ;
 
 
 	/**
@@ -69,7 +71,9 @@ public abstract class Jeu {
 
 			// télècharger le fichier properties 
 			properties.load(input);
+			
 			this.modeDv = Boolean.parseBoolean(properties.getProperty("modeDv"));
+		
 
 		} catch (final IOException ex) {
 			ex.printStackTrace();
@@ -81,26 +85,8 @@ public abstract class Jeu {
 					e.printStackTrace();
 				}
 			}
-		}
+		}  
 	}
-
-	/**
-	 * Cette méthode retourne le nombre de case à utiliser pour chaque jeu.
-	 * @return nbCase
-	 */
-	public int getNbCase() {
-		return nbCase;
-	}
-
-	/**
-	 * Cette méthode retourne le nombre d'essai pour chaque jeu.
-	 * @return nbEssai
-	 */
-	public int getNbEssai() {
-		return nbEssai;
-	}
-
-	//public abstract int[][] affinerMaxMin(int[] proposition1) ;
 
 	/**
 	 * Cette méthode permet de remplir un tableau qui reprèsente une combinaison  donné par l'ordinateur.
@@ -114,7 +100,7 @@ public abstract class Jeu {
 	 * et celle voulue. Dans le but d'améliorer l’intelligence artificielle de l'ordinateur.    
 	 * @param strResuOrdi
 	 */
-	public abstract void setStrRes(String strResuOrdi);
+	public abstract void setStrComparer(String strResuOrdi);
 
 	/**
 	 * Cette méthode permet joueur humain de saisir un nombre sous forme d'une chaine de caractère.
@@ -125,8 +111,8 @@ public abstract class Jeu {
 	 */
 	public int[] saisieCombiHumain() throws StrSaisieException, StrTailleException {
 
-		String strCombiHumain = " ";
-		int tabCombiHumain[] = new int[getNbCase()];
+		String strCombiHumain = "";
+		int tabCombiHumain[] = new int[nbCase];
 
 		try {
 
@@ -139,7 +125,7 @@ public abstract class Jeu {
 			throw new StrSaisieException(strCombiHumain + " Ce n'est pas un nombre !");
 		}
 
-		if(strCombiHumain.length() != getNbCase()) {
+		if(strCombiHumain.length() != nbCase) {
 
 			throw new StrTailleException(" Le nombre de case est différent de celui attendu ! ");
 		}
@@ -148,7 +134,6 @@ public abstract class Jeu {
 
 			tabCombiHumain[i] = Character.getNumericValue(strCombiHumain.charAt(i));
 		}
-
 
 		return tabCombiHumain;
 	}
@@ -213,10 +198,9 @@ public abstract class Jeu {
 
 					comparerRes = comparer(combiEssaiHumain, combiSecreteOrdi);
 
-					//if(comparerRes == false) {
 					String str=resultatComparer(combiEssaiHumain, combiSecreteOrdi);
 					System.out.println("Proposition : " + Arrays.toString(combiEssaiHumain).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");
-					//}
+					
 					Essai ++;
 
 				} catch (StrSaisieException e) {
@@ -232,7 +216,7 @@ public abstract class Jeu {
 
 			}while( !saisieOk );  
 
-		}while(!(comparerRes ||  Essai > getNbEssai()));
+		}while(!(comparerRes ||  Essai > nbEssai));
 
 		System.out.println(toStringChallenger(comparerRes));
 	}
@@ -301,7 +285,7 @@ public abstract class Jeu {
 
 			Essai ++;
 
-		}while(!(comparerRes ||  Essai > getNbEssai()));
+		}while(!(comparerRes ||  Essai > nbEssai));
 
 		System.out.println(toStringDefenseur(comparerRes));
 
@@ -390,11 +374,13 @@ public abstract class Jeu {
 					str1 = resultatComparer(combiEssaiHumain, combiSecreteOrdi);
 					System.out.println("Proposition : " + Arrays.toString(combiEssaiHumain).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str1 +"\n");
 
+					if(!comparerRes) {
+						
 					try {
 						Thread.sleep(2000);
 					} catch (InterruptedException e) {}
 
-					setStrRes (strResuOrdi);
+					setStrComparer(strResuOrdi);
 					combiEssaiOrdi = genCombiOrdinateur();
 					comparerRes2 = comparer(combiEssaiOrdi, combiSecreteHumain);
 
@@ -404,6 +390,7 @@ public abstract class Jeu {
 					System.out.println("Proposition : " + Arrays.toString(combiEssaiOrdi).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + strResuOrdi +"\n");				
 
 					Essai++;
+					}	
 				} catch (StrSaisieException e) {
 
 					System.out.println(e.getMessage());
@@ -417,7 +404,7 @@ public abstract class Jeu {
 
 			}while(!saisieOk);
 
-		}while(!(comparerRes || comparerRes2 ||  Essai > getNbEssai()));
+		}while(!(comparerRes || comparerRes2 ||  Essai > nbEssai));
 
 		System.out.println(toStringDuel(comparerRes, comparerRes2));
 

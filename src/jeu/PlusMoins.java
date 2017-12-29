@@ -5,25 +5,33 @@ import java.io.Serializable;
 public class PlusMoins extends Jeu implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private String strComparer="";
-	private int minMax[][] = new int[getNbCase()][2];
-
 	
-	protected PlusMoins() {
+	private String strComparer="";
+	private int[][] minMax;
+	
+	public PlusMoins() {
 
 		if(!properties.isEmpty()) {
-			this.nbCase = Integer.parseInt(properties.getProperty("nbCasePlusMoins"));
+
 			this.nbEssai = Integer.parseInt(properties.getProperty("nbEssaiPlusMoins"));  
+			this.nbCase = Integer.parseInt(properties.getProperty("nbCasePlusMoins"));
+		}
+		else {
+
+			this.nbEssai = 7;
+			this.nbCase = 4;
+
 		}
 	}
-	
+
 	/**
 	 * Cette méthode permet de remplir un tableau qui reprèsente une combinaison  donné par l'ordinateur. 
 	 */
 	public int[] genCombiOrdinateur() {
+
 		minMax = affinerMaxMin();
-		
-		int tabCombiOrdinateur[] = new int[getNbCase()];
+
+		int tabCombiOrdinateur[] = new int[ nbCase];
 
 		for(int i = 0; i < tabCombiOrdinateur.length; i++) {
 			tabCombiOrdinateur[i] = (int) (Math.random() * (minMax[i][1] - minMax[i][0] +1)) + minMax[i][0];	
@@ -39,7 +47,7 @@ public class PlusMoins extends Jeu implements Serializable{
 	 * @return str
 	 */	
 	public String resultatComparer(int combiEssai[], int combiSecrete[]) {
-		
+
 		strComparer = "";
 
 		for(int i = 0; i < combiSecrete.length ; i++) {
@@ -57,9 +65,9 @@ public class PlusMoins extends Jeu implements Serializable{
 		} 	
 		return strComparer;
 	}
-	
-	public void setStrRes(String strResuOrdi)
-	{
+
+	public void setStrComparer(String strResuOrdi){
+
 		strComparer = strResuOrdi;
 	}
 
@@ -69,29 +77,35 @@ public class PlusMoins extends Jeu implements Serializable{
 	 *@see genCombiOrdinateur()
 	 */
 	public int[][] affinerMaxMin() {
-		
-		if(strComparer != "") {
-				//String str = resultatComparer(combiEssaiOrdi,combiSecreteHumain);
-			for(int i=0; i<strComparer.length();i++) {
-				if(strComparer.charAt(i) == '+') {
-					minMax[i][0] = combiEssaiOrdi[i] + 1;
-				}
-				else if(strComparer.charAt(i) == '-') {
-					minMax[i][1] = combiEssaiOrdi[i] - 1;
-				}
-				else if(strComparer.charAt(i) == '=') {
-					minMax[i][0] = combiEssaiOrdi[i];
-					minMax[i][1] = combiEssaiOrdi[i];
-				}
-			}
-		}
-		else {
-			for(int i = 0; i < minMax.length; i++) {
 
-				minMax[i][0] = 0;		
-				minMax[i][1] = 9;		
-			}
+		if(minMax == null) {
+
+			minMax = new int[nbCase][2];
 		}
+	
+			if(strComparer != "") {
+
+				for(int i=0; i<strComparer.length();i++) {
+					if(strComparer.charAt(i) == '+') {
+						minMax[i][0] = combiEssaiOrdi[i] + 1;
+					}
+					else if(strComparer.charAt(i) == '-') {
+						minMax[i][1] = combiEssaiOrdi[i] - 1;
+					}
+					else if(strComparer.charAt(i) == '=') {
+						minMax[i][0] = combiEssaiOrdi[i];
+						minMax[i][1] = combiEssaiOrdi[i];
+					}
+				}
+			}
+			else {
+				for(int i = 0; i < minMax.length; i++) {
+
+					minMax[i][0] = 0;		
+					minMax[i][1] = 9;		
+				}
+			}
+
 		return minMax;
 	}
 }
