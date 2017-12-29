@@ -54,6 +54,7 @@ public class Main {
 	public static void sortir(){
 		System.out.println("Merci et au revoir");
 		System.exit(0);
+
 	}
 
 	/**
@@ -85,23 +86,27 @@ public class Main {
 			try {
 				saisieMode();
 				saisiOk = true;	
-
+				logger1.info("Entrer dans la méthode choixMode(Jeu J) avec succée");
+				
 				switch(mode) {
 
 				case 1 :
 					J.devinerChallenger();
-					
+					logger1.info("choix du mode: Challenger");
+
 					break;
 
 				case 2 :
 					J.devinerDefenseur();
-
+					logger1.info("choix du mode: Defenseur");
+					
 					break;
 
 				case 3 :
 					J.devinerDuel();
+					logger1.info("choix du mode: Duel");
+					
 					break;
-
 				}
 
 			}catch (IllegalArgumentException e) {
@@ -147,7 +152,11 @@ public class Main {
 			try {
 				saisieCorrecte();
 				saisiOk = true; 
-
+				/**
+				 * log niveau info
+				 */
+				logger1.info("Entrer dans la méthode lancerJeu() avec succée");
+				
 			}catch (IllegalArgumentException e) {
 				
 				System.out.println(e.getMessage());
@@ -162,11 +171,19 @@ public class Main {
 
 		if(choix == 1) {
 			jeu = new PlusMoins();
+			/**
+			 * log
+			 */
+			logger1.info("Choix du jeu <<PlusMois>>");
+			
 			choixMode(jeu);
-
+	
 		}	
 		else if(choix == 2) {
 			jeu = new Mastermind();
+			
+			logger1.info("Choix du jeu <<Mastermind>>");
+			
 			choixMode(jeu);
 		} 
 
@@ -205,16 +222,23 @@ public class Main {
 
 				saisiFinPartie();
 				saisiOk = true;
-
+				logger1.info("Entrer dans la méthode finPartie() avec succée");
+				
 				switch(choixRejouer) {
 
 				case 1 :
 					if(choix == 1) {
 						jeu = new PlusMoins();
+						
+						logger1.info("Rejouer au jeu <<PlusMoins>>");
+
 						choixMode(jeu);
 					}	
 					else if(choix == 2) {
 						jeu = new Mastermind();
+						
+						logger1.info("Rejouer au jeu <<Mastermind>>");
+
 						choixMode(jeu);
 					}
 					try {
@@ -226,10 +250,12 @@ public class Main {
 
 				case 2 :
 					lancerJeu();
+
 					break;
 
 				case 3 :
 					sortir();
+					
 					break;
 				}
 
@@ -250,8 +276,17 @@ public class Main {
 
 	public static void main (String[] args) {
 
+		/**
+		 * log
+		 */
+		logger1.info("Début du jeu");
+		
 		lancerJeu();
-		System.exit(0);
+		
+		/**
+		 * log
+		 */
+		logger1.info("Fin Jeu");
 
 	}
 	

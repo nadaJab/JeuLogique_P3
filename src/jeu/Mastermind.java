@@ -23,10 +23,14 @@ public class Mastermind extends Jeu implements Serializable{
 			
 			this.nbEssai = Integer.parseInt(properties.getProperty("nbEssaiMastermind"));
 			this.nbCase = Integer.parseInt(properties.getProperty("nbCaseMastermind"));
+			logger.info("Récupération des nombres de cases et d'essai");
 		}
 		else {
 			this.nbEssai = 10;
 			this.nbCase = 4;
+			
+			logger.error("erreur lors de la lecture du fichier properties");
+			logger.info("Récupération des nombres de cases et d'essai par défaut");
 		}		
 	}
 

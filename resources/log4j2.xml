@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration status="ERROR">
-  <appenders>
-    <File name="fichierLog" fileName="resources/fichierLog.log">
-        <PatternLayout pattern="%d{yyyy-mm-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-    </File>             
-  </appenders>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration debug="true"
+	xmlns:log4j='http://jakarta.apache.org/log4j/'>
 
-  <loggers>     
+<appenders>
+    <File name="fichierLog" fileName="resources/fichierLog.log">
+    <PatternLayout pattern="%d{yyyy-mm-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+    </File>
+</appenders>
+
+<loggers>
     <root level="ERROR">
-    <Appender-ref ref="fichierLog"/>
-    </root>    
-  </loggers>
-</configuration>
+    <Appender-ref ref="fichierLog" />
+    </root>
+</loggers>
+
+<loggers>
+     <root level="INFO">    
+     <Appender-ref ref="fichierLog" />
+     </root>
+</loggers>
+
+</log4j:configuration>

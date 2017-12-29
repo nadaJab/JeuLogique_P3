@@ -12,14 +12,19 @@ public class PlusMoins extends Jeu implements Serializable{
 	public PlusMoins() {
 
 		if(!properties.isEmpty()) {
-
+		
 			this.nbEssai = Integer.parseInt(properties.getProperty("nbEssaiPlusMoins"));  
 			this.nbCase = Integer.parseInt(properties.getProperty("nbCasePlusMoins"));
+			
+			logger.info("Récupération des nombres de cases et d'essai");
 		}
 		else {
 
 			this.nbEssai = 7;
 			this.nbCase = 4;
+			
+			logger.error("erreur lors de la lecture du fichier properties");
+			logger.info("Récupération des nombres de cases et d'essai par défaut");
 
 		}
 	}
