@@ -3,7 +3,6 @@ package jeu;
 
 public class PlusMoins extends Jeu {
 	
-	private String strComparer="";
 	private int[][] minMax;
 	
 	public PlusMoins() {
@@ -46,32 +45,28 @@ public class PlusMoins extends Jeu {
 	 * entre une combinaison secrète et une proposition donnée.   
 	 * @param combiSecrete 
 	 * @param combiEssai
-	 * @return str
+	 * @return strResComparer
 	 */	
 	public String resultatComparer(int combiEssai[], int combiSecrete[]) {
 
-		strComparer = "";
+		String strResComparer = "";
 
 		for(int i = 0; i < combiSecrete.length ; i++) {
 
 			if(combiEssai[i] == combiSecrete[i]) {
-				strComparer += "=";
+				strResComparer += "=";
 			}
 			else if(combiEssai[i] < combiSecrete[i]) {
-				strComparer +="+";
+				strResComparer +="+";
 
 			}
 			else if(combiEssai[i] > combiSecrete[i]) {
-				strComparer += "-";
+				strResComparer += "-";
 			}
 		} 	
-		return strComparer;
+		return strResComparer;
 	}
 
-	public void setStrComparer(String strResuOrdi){
-
-		strComparer = strResuOrdi;
-	}
 
 	/**
 	 *Cette méthode permet d'affiner l'intervalle [min max] de la méthode genCombiOrdinateur()

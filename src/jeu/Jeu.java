@@ -18,6 +18,8 @@ public abstract class Jeu {
 
 	protected int nbCase;
 	protected int nbEssai;
+	
+	protected String strComparer="";
 
 	private Scanner sc = new Scanner(System.in);
 	protected Properties properties = new Properties();
@@ -171,13 +173,13 @@ public abstract class Jeu {
 
 					comparerRes = comparer(propositionHumain, combiSecreteOrdi);
 
-					String str=resultatComparer(propositionHumain, combiSecreteOrdi);
-					System.out.println("Proposition : " + Arrays.toString(propositionHumain).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");
+					strComparer=resultatComparer(propositionHumain, combiSecreteOrdi);
+					System.out.println("Proposition : " + Arrays.toString(propositionHumain).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + strComparer +"\n");
 
 					/**
 					 * log
 					 */
-					logger.info("Proposition : " + Arrays.toString(propositionHumain).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");
+					logger.info("Proposition : " + Arrays.toString(propositionHumain).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + strComparer +"\n");
 
 					Essai ++;
 
@@ -229,7 +231,7 @@ public abstract class Jeu {
 	 **/ 
 	public void devinerDefenseur() {
 
-		String str="";
+		//String str="";
 		boolean comparerRes = false;
 		int Essai = 0;
 		boolean saisieOk = false;
@@ -264,14 +266,14 @@ public abstract class Jeu {
 			propositionOrdi = genCombiOrdinateur();
 
 			comparerRes = comparer(propositionOrdi, combiSecreteHumain);
-			str = resultatComparer(propositionOrdi, combiSecreteHumain);
+			strComparer = resultatComparer(propositionOrdi, combiSecreteHumain);
 
-			System.out.println("Proposition : " + Arrays.toString(propositionOrdi).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");		
+			System.out.println("Proposition : " + Arrays.toString(propositionOrdi).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + strComparer +"\n");		
 
 			/**
 			 * log
 			 */
-			logger.info("Proposition : " + Arrays.toString(propositionOrdi).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str +"\n");
+			logger.info("Proposition : " + Arrays.toString(propositionOrdi).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + strComparer +"\n");
 
 			try {
 				Thread.sleep(2000);
@@ -314,8 +316,10 @@ public abstract class Jeu {
 	 * et celle voulue. Dans le but d'améliorer l’intelligence artificielle de l'ordinateur.    
 	 * @param strResuOrdi
 	 */
-	public abstract void setStrComparer(String strResuOrdi);
-
+	public void setStrComparer(String strResuOrdi) {
+		strComparer = strResuOrdi;
+	}
+	
 	/**
 	 * Cette méthode est spécifique pour le <<mode duel>>.
 	 * Elle permet à l'ordinateur de deviner la combinaison secrète de joueur humain 
@@ -330,7 +334,7 @@ public abstract class Jeu {
 	 **/
 	public void devinerDuel() {
 
-		String str1 = "";
+		//String str1 = "";
 		String strResuOrdi = "";
 		int Essai = 0;
 		boolean saisieOk = false;
@@ -391,13 +395,13 @@ public abstract class Jeu {
 
 					comparerRes = comparer(propositionHumain,combiSecreteOrdi);
 
-					str1 = resultatComparer(propositionHumain, combiSecreteOrdi);
-					System.out.println("Proposition : " + Arrays.toString(propositionHumain).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str1 +"\n");
+					strComparer = resultatComparer(propositionHumain, combiSecreteOrdi);
+					System.out.println("Proposition : " + Arrays.toString(propositionHumain).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + strComparer +"\n");
 
 					/**
 					 * log
 					 */
-					logger.info("Proposition du joueur: " + Arrays.toString(propositionHumain).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + str1 +"\n");
+					logger.info("Proposition du joueur: " + Arrays.toString(propositionHumain).replaceAll("\\[|\\]|,|\\s", "") + " --> Réponse : " + strComparer +"\n");
 
 					if(!comparerRes) {
 

@@ -1,17 +1,15 @@
 package jeu;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Mastermind extends Jeu{	
-	
-	private String strComparer = "";
-	
+
+	//private String strComparer = "";
+
 	private int n = 10; 
 	private int index = 0; 
 
-	private int[] tabIndice;
 	private int[] combinaison;
-	
+
 	private ArrayList<int[]> listePos;
 
 	public Mastermind() {
@@ -19,7 +17,7 @@ public class Mastermind extends Jeu{
 		// récupération des nbEssaiMastermind et nbCaseMastermind dans le cas de lecture du fichier config
 		// sinon mettre des valeurs par defaults
 		if(!properties.isEmpty()) {
-			
+
 			this.nbEssai = Integer.parseInt(properties.getProperty("nbEssaiMastermind"));
 			this.nbCase = Integer.parseInt(properties.getProperty("nbCaseMastermind"));
 			logger.info("Récupération des nombres de cases et d'essai");
@@ -27,7 +25,7 @@ public class Mastermind extends Jeu{
 		else {
 			this.nbEssai = 10;
 			this.nbCase = 4;
-			
+
 			logger.error("erreur lors de la lecture du fichier properties");
 			logger.info("Récupération des nombres de cases et d'essai par défaut");
 		}		
@@ -37,13 +35,13 @@ public class Mastermind extends Jeu{
 	 * 
 	 */
 	public int[] genCombiOrdinateur() {
-		
+
 		// dans le cas du premier passage dans la fct on initialise notre liste de proposition
 		if(listePos == null) {
-			
+
 			listePos = new ArrayList<int[]>((int)(Math.pow(nbCase, 10)));
 		}
-		
+
 		int tabCombiOrdinateur[] = new int[nbCase];
 
 		// si notre liste est vide on la rempli sinon affine notre sélection pour avoir une liste plus précise 
@@ -73,10 +71,10 @@ public class Mastermind extends Jeu{
 
 		// initialisation du tableau combinaison
 		if(combinaison == null) {
-			
+
 			combinaison = new int[nbCase];
 		}
-		
+
 		if (index >= nbCase) {
 
 			// mettre le contenu du tableau combinaison dans un nouveau tableau pour avoir une nouvelle référence
@@ -97,7 +95,7 @@ public class Mastermind extends Jeu{
 		}
 	}
 
-	
+
 	/**
 	 * Cette méthode retourne une liste plus affiner en supprimant toutes les propositions qui sont différentes du
 	 * résultat précédent. 
@@ -126,16 +124,60 @@ public class Mastermind extends Jeu{
 	}
 
 	/**
-	 * Comparaison de deux combinaisons indiquant le nombre de chiffres bien placés et le nombre de chiffres mal placés
+	 * Cette méthode retourne le résultat de la comparaison entre 
+	 * une combinaison secrète et une proposition donnée ( bien placé, présent)
 	 * @param combiSecrete 
 	 * @param combiEssai
-	 * @return resultat
+	 * @return strResComparer
 	 */
 	public String resultatComparer(int combiEssai[], int combiSecrete[]) {
 
-		tabIndice = new int[nbCase]; // tableau d'indice avec "2" si le chiffre est bien placé ou "1" si le chiffre est présent 
+		String strResComparer = "";
+		String strBienPlace ="";
+		String strPresent ="";
+		int nbBienPlace=0;
+		int nbPresent=0;
+
+		// Comparaison de deux combinaisons en remplissent un tableau d'indice
+		int[] tabIndice = tabindiceComparer (combiEssai,combiSecrete);
+		
+
+		for(int i = 0; i < tabIndice.length ; i++) {
+
+			if(tabIndice[i]== 2) {
+				nbBienPlace++;
+				strBienPlace = nbBienPlace + " bien placé(s)";
+			}
+			else if(tabIndice[i]== 1) {
+				nbPresent++;
+				strPresent = nbPresent + " présent(s) ";	
+			}
+		}
+
+		if (nbBienPlace==0 && nbPresent==0){
+			strResComparer ="Il n'existe aucun chiffre";	
+		}else {
+			strResComparer = strBienPlace + " "  + strPresent;
+		}
+
+		return strResComparer;
+	}
+
+
+
+
+	/**
+	 * Comparaison de deux combinaisons en remplissent un tableau d'indice
+	 * @see resultatComparer() 
+	 * @param combiSecrete 
+	 * @param combiEssai
+	 * @return tabIndice
+	 */
+	public int[] tabindiceComparer (int combiEssai[], int combiSecrete[]) {
+
+		int[] tabIndice = new int[nbCase]; // tableau d'indice avec "2" si le chiffre est bien placé ou "1" si le chiffre est présent 
 		ArrayList<Integer> indiceExist = new ArrayList<Integer>(); //ArrayList pour sauvegarder les indices du tableau des élements trouvés (placé, présent)
-		strComparer = "";
+		
 
 		for(int i = 0; i < combiEssai.length ; i++) {
 
@@ -155,52 +197,7 @@ public class Mastermind extends Jeu{
 				}
 			}
 		}
-		strComparer = TabindiceString();
-		return strComparer;
-	}
-
-
-	/**
-	 * Cette méthode retourne le résultat de la comparaison entre 
-	 * une combinaison secrète et une proposition donnée ( bien placé, présent)
-	 * à travers le contenu du tableau indice.
-	 * @see resultatComparer() 
-	 * @return str
-	 */
-	public String TabindiceString() {
-
-		int tabVide[] = new int[nbCase];
-		String str="";
-		String str1 ="";
-		String str2 ="";
-		int nb=0;
-		int nb1=0;
-
-		if(Arrays.equals(tabIndice, tabVide)) {
-			str ="Il n'existe aucun chiffre";	
-		}
-		else {
-			for(int i = 0; i < tabIndice.length ; i++) {
-
-				if(tabIndice[i]== 2) {
-					nb++;
-					str1 = nb + " bien placé(s)";
-				}
-				else if(tabIndice[i]== 1) {
-					nb1++;
-					str2 = nb1 + " présent(s) ";	
-				}
-			}
-			str = str1 + " "  + str2;
-		}
-
-		return str;
-	}
-
-	
-	public void setStrComparer(String strResuOrdi) {
-
-		strComparer = strResuOrdi;
+		return tabIndice;
 	}
 
 } 
