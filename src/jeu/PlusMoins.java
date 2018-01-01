@@ -1,12 +1,8 @@
 package jeu;
 
-import java.io.Serializable;
 
-public class PlusMoins extends Jeu implements Serializable{
-
-	private static final long serialVersionUID = 1L;
+public class PlusMoins extends Jeu {
 	
-	private String strComparer="";
 	private int[][] minMax;
 	
 	public PlusMoins() {
@@ -49,32 +45,28 @@ public class PlusMoins extends Jeu implements Serializable{
 	 * entre une combinaison secrète et une proposition donnée.   
 	 * @param combiSecrete 
 	 * @param combiEssai
-	 * @return str
+	 * @return strResComparer
 	 */	
 	public String resultatComparer(int combiEssai[], int combiSecrete[]) {
 
-		strComparer = "";
+		String strResComparer = "";
 
 		for(int i = 0; i < combiSecrete.length ; i++) {
 
 			if(combiEssai[i] == combiSecrete[i]) {
-				strComparer += "=";
+				strResComparer += "=";
 			}
 			else if(combiEssai[i] < combiSecrete[i]) {
-				strComparer +="+";
+				strResComparer +="+";
 
 			}
 			else if(combiEssai[i] > combiSecrete[i]) {
-				strComparer += "-";
+				strResComparer += "-";
 			}
 		} 	
-		return strComparer;
+		return strResComparer;
 	}
 
-	public void setStrComparer(String strResuOrdi){
-
-		strComparer = strResuOrdi;
-	}
 
 	/**
 	 *Cette méthode permet d'affiner l'intervalle [min max] de la méthode genCombiOrdinateur()
@@ -92,14 +84,14 @@ public class PlusMoins extends Jeu implements Serializable{
 
 				for(int i=0; i<strComparer.length();i++) {
 					if(strComparer.charAt(i) == '+') {
-						minMax[i][0] = combiEssaiOrdi[i] + 1;
+						minMax[i][0] = propositionOrdi[i] + 1;
 					}
 					else if(strComparer.charAt(i) == '-') {
-						minMax[i][1] = combiEssaiOrdi[i] - 1;
+						minMax[i][1] = propositionOrdi[i] - 1;
 					}
 					else if(strComparer.charAt(i) == '=') {
-						minMax[i][0] = combiEssaiOrdi[i];
-						minMax[i][1] = combiEssaiOrdi[i];
+						minMax[i][0] = propositionOrdi[i];
+						minMax[i][1] = propositionOrdi[i];
 					}
 				}
 			}
