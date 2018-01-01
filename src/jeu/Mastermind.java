@@ -1,24 +1,23 @@
 package jeu;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Mastermind extends Jeu implements Serializable{	
-
-	private static final long serialVersionUID = 1L;
-
-	private int[] tabIndice;
+public class Mastermind extends Jeu{	
+	
 	private String strComparer = "";
-
-	private ArrayList<int[]> listePos;
-
+	
 	private int n = 10; 
 	private int index = 0; 
 
+	private int[] tabIndice;
 	private int[] combinaison;
+	
+	private ArrayList<int[]> listePos;
 
 	public Mastermind() {
 
+		// récupération des nbEssaiMastermind et nbCaseMastermind dans le cas de lecture du fichier config
+		// sinon mettre des valeurs par defaults
 		if(!properties.isEmpty()) {
 			
 			this.nbEssai = Integer.parseInt(properties.getProperty("nbEssaiMastermind"));
@@ -39,6 +38,7 @@ public class Mastermind extends Jeu implements Serializable{
 	 */
 	public int[] genCombiOrdinateur() {
 		
+		// dans le cas du premier passage dans la fct on initialise notre liste de proposition
 		if(listePos == null) {
 			
 			listePos = new ArrayList<int[]>((int)(Math.pow(nbCase, 10)));
@@ -46,6 +46,7 @@ public class Mastermind extends Jeu implements Serializable{
 		
 		int tabCombiOrdinateur[] = new int[nbCase];
 
+		// si notre liste est vide on la rempli sinon affine notre sélection pour avoir une liste plus précise 
 		if(listePos.size() == 0) { 
 
 			creerlistePos(index);
@@ -70,6 +71,7 @@ public class Mastermind extends Jeu implements Serializable{
 	 */
 	public void creerlistePos(int index) {
 
+		// initialisation du tableau combinaison
 		if(combinaison == null) {
 			
 			combinaison = new int[nbCase];
@@ -77,7 +79,8 @@ public class Mastermind extends Jeu implements Serializable{
 		
 		if (index >= nbCase) {
 
-			// la liste est construite 
+			// mettre le contenu du tableau combinaison dans un nouveau tableau pour avoir une nouvelle référence
+			// a fin de sauvegarder toutes les possibilitées
 			int[] combinaison2 = new int[nbCase];
 
 			System.arraycopy(combinaison, 0, combinaison2, 0, nbCase); 
@@ -96,20 +99,20 @@ public class Mastermind extends Jeu implements Serializable{
 
 	
 	/**
-	 * @return 
-	 * 
+	 * Cette méthode retourne une liste plus affiner en supprimant toutes les propositions qui sont différentes du
+	 * résultat précédent. 
+	 * @return listePos
 	 */
 	public void affinerListePos() {
 
-		// cette variable contient le résultat de la comparaison 
-		// de la combinaison secrète et la proposition de l'ordinateur
+		//Cette variable permet de sauvegerder le contenu de la variable <strComparer> avant qu'il soit modifier.
 		String strComparerCombiProp = strComparer; 
 
 		if(!strComparerCombiProp.equals("")) {
 			for(int i = 0; i < listePos.size(); i++) {
 
-				//Comparer la proposition de l'ordinateur avec toutes les combinaisons qui existent dans l'ArrayList.
-				String strComparerPropPossi = resultatComparer(listePos.get(i),combiEssaiOrdi);  
+				//Comparer la proposition de l'ordinateur avec toutes les combinaisons possibles qui existent dans l'ArrayList.
+				String strComparerPropPossi = resultatComparer(listePos.get(i),propositionOrdi);  
 
 				if(!strComparerPropPossi.equals(strComparerCombiProp)) {
 
@@ -131,7 +134,7 @@ public class Mastermind extends Jeu implements Serializable{
 	public String resultatComparer(int combiEssai[], int combiSecrete[]) {
 
 		tabIndice = new int[nbCase]; // tableau d'indice avec "2" si le chiffre est bien placé ou "1" si le chiffre est présent 
-		ArrayList<Integer> indiceExist = new ArrayList<Integer>(); //ArrayList pour sauvegarder les indices du tableau des élements trouvés (mplacé, présent)
+		ArrayList<Integer> indiceExist = new ArrayList<Integer>(); //ArrayList pour sauvegarder les indices du tableau des élements trouvés (placé, présent)
 		strComparer = "";
 
 		for(int i = 0; i < combiEssai.length ; i++) {
@@ -194,6 +197,7 @@ public class Mastermind extends Jeu implements Serializable{
 		return str;
 	}
 
+	
 	public void setStrComparer(String strResuOrdi) {
 
 		strComparer = strResuOrdi;

@@ -1,10 +1,7 @@
 package jeu;
 
-import java.io.Serializable;
 
-public class PlusMoins extends Jeu implements Serializable{
-
-	private static final long serialVersionUID = 1L;
+public class PlusMoins extends Jeu {
 	
 	private String strComparer="";
 	private int[][] minMax;
@@ -92,14 +89,14 @@ public class PlusMoins extends Jeu implements Serializable{
 
 				for(int i=0; i<strComparer.length();i++) {
 					if(strComparer.charAt(i) == '+') {
-						minMax[i][0] = combiEssaiOrdi[i] + 1;
+						minMax[i][0] = propositionOrdi[i] + 1;
 					}
 					else if(strComparer.charAt(i) == '-') {
-						minMax[i][1] = combiEssaiOrdi[i] - 1;
+						minMax[i][1] = propositionOrdi[i] - 1;
 					}
 					else if(strComparer.charAt(i) == '=') {
-						minMax[i][0] = combiEssaiOrdi[i];
-						minMax[i][1] = combiEssaiOrdi[i];
+						minMax[i][0] = propositionOrdi[i];
+						minMax[i][1] = propositionOrdi[i];
 					}
 				}
 			}
