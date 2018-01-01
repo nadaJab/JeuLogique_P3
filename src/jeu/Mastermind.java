@@ -188,7 +188,3 @@ public class Mastermind extends Jeu{
 		return tabIndice;
 	}
 } 
-
-
-
-
