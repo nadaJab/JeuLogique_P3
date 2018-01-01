@@ -86,25 +86,24 @@ public class Main {
 			try {
 				saisieMode();
 				saisiOk = true;	
-				logger1.info("Entrer dans la méthode choixMode(Jeu J) avec succée");
 				
 				switch(mode) {
 
 				case 1 :
-					J.devinerChallenger();
 					logger1.info("choix du mode: Challenger");
+					J.devinerChallenger();
 
 					break;
 
 				case 2 :
-					J.devinerDefenseur();
 					logger1.info("choix du mode: Defenseur");
+					J.devinerDefenseur();
 					
 					break;
 
 				case 3 :
-					J.devinerDuel();
 					logger1.info("choix du mode: Duel");
+					J.devinerDuel();
 					
 					break;
 				}
@@ -152,10 +151,6 @@ public class Main {
 			try {
 				saisieCorrecte();
 				saisiOk = true; 
-				/**
-				 * log niveau info
-				 */
-				logger1.info("Entrer dans la méthode lancerJeu() avec succée");
 				
 			}catch (IllegalArgumentException e) {
 				
@@ -170,19 +165,23 @@ public class Main {
 		}while(!saisiOk);
 
 		if(choix == 1) {
-			jeu = new PlusMoins();
 			/**
 			 * log
 			 */
 			logger1.info("Choix du jeu <<PlusMois>>");
 			
+			jeu = new PlusMoins();
+			
 			choixMode(jeu);
 	
 		}	
 		else if(choix == 2) {
-			jeu = new Mastermind();
-			
+			/**
+			 * log
+			 */
 			logger1.info("Choix du jeu <<Mastermind>>");
+			
+			jeu = new Mastermind();
 			
 			choixMode(jeu);
 		} 
@@ -222,7 +221,6 @@ public class Main {
 
 				saisiFinPartie();
 				saisiOk = true;
-				logger1.info("Entrer dans la méthode finPartie() avec succée");
 				
 				switch(choixRejouer) {
 

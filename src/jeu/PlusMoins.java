@@ -1,6 +1,5 @@
 package jeu;
 
-
 public class PlusMoins extends Jeu {
 	
 	private int[][] minMax;

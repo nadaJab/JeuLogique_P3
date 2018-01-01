@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 public abstract class Jeu {
 
-	protected static Logger logger =  LogManager.getLogger(Main.class);
+	protected static Logger logger =  LogManager.getLogger(Jeu.class);
 
 	protected int nbCase;
 	protected int nbEssai;
@@ -289,7 +289,7 @@ public abstract class Jeu {
 		/**
 		 *log 
 		 */
-		logger.info(toStringChallenger(comparerRes));
+		logger.info(toStringDefenseur(comparerRes));
 	}
 
 	/**

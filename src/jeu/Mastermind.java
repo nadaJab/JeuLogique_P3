@@ -3,8 +3,6 @@ import java.util.ArrayList;
 
 public class Mastermind extends Jeu{	
 
-	//private String strComparer = "";
-
 	private int n = 10; 
 	private int index = 0; 
 
@@ -14,8 +12,8 @@ public class Mastermind extends Jeu{
 
 	public Mastermind() {
 
-		// récupération des nbEssaiMastermind et nbCaseMastermind dans le cas de lecture du fichier config
-		// sinon mettre des valeurs par defaults
+		// récupération de nbEssaiMastermind et nbCaseMastermind dans le cas de lecture du fichier config
+		// sinon mettre des valeurs par défaut.
 		if(!properties.isEmpty()) {
 
 			this.nbEssai = Integer.parseInt(properties.getProperty("nbEssaiMastermind"));
@@ -31,27 +29,25 @@ public class Mastermind extends Jeu{
 		}		
 	}
 
-	/**
-	 * 
-	 */
+	
 	public int[] genCombiOrdinateur() {
 
-		// dans le cas du premier passage dans la fct on initialise notre liste de proposition
-		if(listePos == null) {
+		//Tant que l'arrayList <listePos> n'est pas initialisé, on l'initialise.
+		if(listePos == null) { 
 
-			listePos = new ArrayList<int[]>((int)(Math.pow(nbCase, 10)));
+			listePos = new ArrayList<int[]>((int)(Math.pow(nbCase, 10))); 
 		}
 
 		int tabCombiOrdinateur[] = new int[nbCase];
 
-		// si notre liste est vide on la rempli sinon affine notre sélection pour avoir une liste plus précise 
-		if(listePos.size() == 0) { 
+		if(listePos.size() == 0) { //Si l'arrayList <listePos> est vide
 
-			creerlistePos(index);
+			creerlistePos(index); //dresser une liste de toutes les combinaisons possibles en fonction du nombre de case et de 10 chiffres
+			
 		}
 		else {
 
-			affinerListePos();	
+			affinerListePos();	// éliminer des possibilités de la liste créée en fonction du résultat de comparaison 
 		}
 
 		int indiceAlea = (int)(Math.random()*listePos.size()); 	// Choix de l'indice dans l'ensemble des combinaisons (aléatoire)
@@ -69,7 +65,7 @@ public class Mastermind extends Jeu{
 	 */
 	public void creerlistePos(int index) {
 
-		// initialisation du tableau combinaison
+		// initialisation du tableau <combinaison>
 		if(combinaison == null) {
 
 			combinaison = new int[nbCase];
@@ -77,8 +73,8 @@ public class Mastermind extends Jeu{
 
 		if (index >= nbCase) {
 
-			// mettre le contenu du tableau combinaison dans un nouveau tableau pour avoir une nouvelle référence
-			// a fin de sauvegarder toutes les possibilitées
+			// mettre le contenu du tableau <combinaison> dans un nouveau tableau pour avoir une nouvelle référence
+			// a fin de sauvegarder toutes les possibilités.
 			int[] combinaison2 = new int[nbCase];
 
 			System.arraycopy(combinaison, 0, combinaison2, 0, nbCase); 
@@ -95,24 +91,20 @@ public class Mastermind extends Jeu{
 		}
 	}
 
-
 	/**
-	 * Cette méthode retourne une liste plus affiner en supprimant toutes les propositions qui sont différentes du
+	 * Cette méthode retourne une liste plus affinée en supprimant toutes les propositions qui sont différentes du
 	 * résultat précédent. 
 	 * @return listePos
 	 */
 	public void affinerListePos() {
 
-		//Cette variable permet de sauvegerder le contenu de la variable <strComparer> avant qu'il soit modifier.
-		String strComparerCombiProp = strComparer; 
-
-		if(!strComparerCombiProp.equals("")) {
+		if(!strComparer.equals("")) {
 			for(int i = 0; i < listePos.size(); i++) {
 
 				//Comparer la proposition de l'ordinateur avec toutes les combinaisons possibles qui existent dans l'ArrayList.
 				String strComparerPropPossi = resultatComparer(listePos.get(i),propositionOrdi);  
 
-				if(!strComparerPropPossi.equals(strComparerCombiProp)) {
+				if(!strComparerPropPossi.equals(strComparer)) {
 
 					// On supprime toutes les combinaisons qui n'ont pas le même résultat de comparaison
 					//que la proposition avec la combinaison secrète.
@@ -138,10 +130,9 @@ public class Mastermind extends Jeu{
 		int nbBienPlace=0;
 		int nbPresent=0;
 
-		// Comparaison de deux combinaisons en remplissent un tableau d'indice
+		// Comparaison de deux combinaisons en remplissant un tableau d'indice
 		int[] tabIndice = tabindiceComparer (combiEssai,combiSecrete);
 		
-
 		for(int i = 0; i < tabIndice.length ; i++) {
 
 			if(tabIndice[i]== 2) {
@@ -163,11 +154,8 @@ public class Mastermind extends Jeu{
 		return strResComparer;
 	}
 
-
-
-
 	/**
-	 * Comparaison de deux combinaisons en remplissent un tableau d'indice
+	 * Comparaison de deux combinaisons en remplissant un tableau d'indice
 	 * @see resultatComparer() 
 	 * @param combiSecrete 
 	 * @param combiEssai
@@ -199,7 +187,6 @@ public class Mastermind extends Jeu{
 		}
 		return tabIndice;
 	}
-
 } 
 
 
