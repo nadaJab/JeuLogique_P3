@@ -97,6 +97,8 @@ public class Mastermind extends Jeu {
 	 * @return listePos
 	 */
 	public void affinerListePos() {
+
+		if(!strComparer.equals("")) {
 			
 			for(int i = 0; i < listePos.size(); i++) {
 
@@ -111,7 +113,7 @@ public class Mastermind extends Jeu {
 					i--;
 				}
 			}
-		
+		}
 	}
 
 	/**
