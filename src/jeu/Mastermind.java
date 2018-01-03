@@ -1,9 +1,9 @@
 package jeu;
 import java.util.ArrayList;
 
-public class Mastermind extends Jeu{	
+public class Mastermind extends Jeu {	
 
-	private int n = 10; 
+	private int n = 10; //le nombre des chiffres de 0 à 9
 	private int index = 0; 
 
 	private int[] combinaison;
@@ -36,7 +36,7 @@ public class Mastermind extends Jeu{
 		if(listePos == null) { 
 
 			listePos = new ArrayList<int[]>((int)(Math.pow(nbCase, 10))); 
-		}
+			}
 
 		int tabCombiOrdinateur[] = new int[nbCase];
 
@@ -44,11 +44,11 @@ public class Mastermind extends Jeu{
 
 			creerlistePos(index); //dresser une liste de toutes les combinaisons possibles en fonction du nombre de case et de 10 chiffres
 			
-		}
+			}
 		else {
 
 			affinerListePos();	// éliminer des possibilités de la liste créée en fonction du résultat de comparaison 
-		}
+			}
 
 		int indiceAlea = (int)(Math.random()*listePos.size()); 	// Choix de l'indice dans l'ensemble des combinaisons (aléatoire)
 
@@ -97,8 +97,7 @@ public class Mastermind extends Jeu{
 	 * @return listePos
 	 */
 	public void affinerListePos() {
-
-		if(!strComparer.equals("")) {
+			
 			for(int i = 0; i < listePos.size(); i++) {
 
 				//Comparer la proposition de l'ordinateur avec toutes les combinaisons possibles qui existent dans l'ArrayList.
@@ -112,7 +111,7 @@ public class Mastermind extends Jeu{
 					i--;
 				}
 			}
-		}
+		
 	}
 
 	/**
